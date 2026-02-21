@@ -3,32 +3,32 @@
 Tento repozitář obsahuje řešení testovacího zadání pro pozici Front-end Developer.
 Projekt je postaven na Next.js (App Router), TypeScriptu a Tailwind CSS.
 
-## Tailwind CSS Konfigurace
+## Tailwind CSS v4 — Nový přístup
 
-V projektu je nastaven `tailwind.config.ts` s následujícím nastavením:
+Projekt používá **Tailwind CSS v4**, kde se konfiguraci provádí přímo v `globals.css` pomocí direktivy `@theme` místo tradičního `tailwind.config.ts`.
 
-### Content Paths
-Nakonfiguroval jsem cesty pro skenování souborů:
-- `./app/**/*.{js,ts,jsx,tsx,mdx}` — sleduje všechny komponenty v App Router
-- `./components/**/*.{js,ts,jsx,tsx,mdx}` — sleduje komponenty v adresáři components
+### Proč byla změněna konfigurace?
+V Tailwind v4 byl zaveden nový přístup:
+- **Starý přístup**: `tailwind.config.ts` + `@tailwind utilities` — již není podporován
+- **Nový přístup**: Konfigurační direktiva `@theme` přímo v CSS — moderněji a efektivněji
 
-Takto Tailwind správně generuje pouze CSS, které se v projektu skutečně používá.
+Rozhodl jsem se použít nový přístup místo fallbacku `@config "./tailwind.config.ts"`, protože je to budoucnost Tailwind.
 
 ### Vlastní barvy (Daramis Design System)
-Vytvořil jsem vlastní barevnou paletu `daramis` jako rozšíření defaultních Tailwind barev (bez jejich přepsání):
-- **Green** (`#3A4035`) — pozadí sekcí
-- **Darkest** (`#1A1A1A`) — primární barva tlačítek
-- **Dark** (`#2A2D27`) — pozadí a sekundární inverzní tlačítka
-- **Yellow** (`#E5B962`) — akcentuální žlutá
-- **Creamy** (`#EBE6E0`) — světlé pozadí sekcí
-- **Creamy 2** (`#C4BCB3`) — dekorativní texty a odkazy
-- **White** (`#FFFFFF`) — primární bílá
-- **Error** (`#D34B4B`) — chybové hlášky
+Definoval jsem barevnou paletu přímo v `globals.css` pomocí CSS proměnných:
+- **Green** (`--color-daramis-green: #3A4035`) — pozadí sekcí
+- **Darkest** (`--color-daramis-darkest: #1A1A1A`) — primární barva tlačítek
+- **Dark** (`--color-daramis-dark: #2A2D27`) — pozadí a sekundární inverzní tlačítka
+- **Yellow** (`--color-daramis-yellow: #E5B962`) — akcentuální žlutá
+- **Creamy** (`--color-daramis-creamy: #EBE6E0`) — světlé pozadí sekcí
+- **Creamy 2** (`--color-daramis-creamy-2: #C4BCB3`) — dekorativní texty a odkazy
+- **White** (`--color-daramis-white: #FFFFFF`) — primární bílá
+- **Error** (`--color-daramis-error: #D34B4B`) — chybové hlášky
 
 ### Vlastní fonty
-Přidal jsem podporu pro dvě custom fonty:
-- **Nudista** — preferovaný font pro projekt
-- **Arial** — fallback sans-serif
+Přidal jsem podporu pro dvě custom fonty jako CSS proměnné:
+- **Nudista** (`--font-family-nudista: "Nudista", sans-serif`) — preferovaný font pro projekt
+- **Arial** (`--font-family-arial: "Arial", sans-serif`) — fallback sans-serif
 
 ## Globální nastavení (Root Layout)
 

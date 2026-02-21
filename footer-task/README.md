@@ -100,31 +100,56 @@ Footer s 2-sloupcovým layoutem (mobilní: 1 sloupec, desktop: 2 sloupce):
 ```
 
 ### `components/LeadForm.tsx` — Lead Form Komponenta
-Client-side komponenta (`"use client"`) pro sběr dat potenciálních klientů.
+Client-side komponenta (`"use client"`) pro sběr dat potenciálních klientů s komplexní strukturou.
 
 **Struktura formuláře:**
 
-1. **Řádek 1 — Jméno + Příjmení**
+1. **Řádek 1 — Jméno + Příjmení** (responsivní 2 sloupce)
    - Textová pole se spodním bordrem (`border-b border-daramis-darkest`)
    - Focus efekt: border změní na zelenou (`focus:border-daramis-green`)
-   - Responsivní: na mobilu pod sebou, na desktopu vedle sebe (`md:flex-row`)
+   - Přehlížeč spravuje validaci typu `text`
 
-2. **Řádek 2 — Telefonní číslo + E-mail**
-   - Stejný design jako řádek 1
+2. **Řádek 2 — Telefonní číslo + E-mail** (responsivní 2 sloupce)
    - Input typy: `tel` a `email` pro nativní validaci
    - E-mail pole je povinné (označeno `*`)
+   - Focus efekt stejný jako v řádku 1
 
-3. **Tlačítko "ODESLAT"**
+3. **Řádek 3 — Zpráva** (textarea)
+   - `<textarea>` s `rows={1}` pro začátek
+   - Border: `border-daramis-creamy` (světlejší barva pro vizuální odlišení)
+   - Focus: border změní na žlutou (`focus:border-daramis-yellow`)
+   - `resize-none` — zakáže změnu velikosti uživatelem
+   - Placeholder styling: `placeholder:text-daramis-creamy placeholder:opacity-30`
+
+4. **Řádek 4 — Dropdown "O jaký byt máte zájem?"**
+   - `<select>` s opcemi: 1+KK, 2+KK, 3+KK, 4+KK
+   - Styling: `bg-transparent border-b border-daramis-creamy`
+   - Focus: border změní na žlutou (`focus:border-daramis-yellow`)
+   - Text: `text-daramis-creamy` (viditelné na zeleném pozadí)
+   - Option texty: `text-daramis-darkest` (pro viditelnost v systémovém dropdown menu)
+   - `cursor-pointer` pro lepší UX
+
+5. **Řádek 5 — Checkboxy (2 položky)**
+   - **Newsletter**: "Chci být součástí newsletteru Daramis..."
+   - **GDPR**: "Odesláním formuláře souhlasím se zpracováním osobních údajů..."
+   - Styling: `accent-daramis-yellow` — volič změní barvu na žlutou
+   - Label struktura: `flex items-start gap-4` pro správné zarovnání
+   - Interaktivita: `group-hover:opacity-100` — text se zvýrazní při hover
+
+6. **Tlačítko "ODESLAT"** (footer formuláře)
    - Design: `bg-daramis-darkest` text `text-daramis-white`
-   - Hover efekt: pozadí se změní na zelenou (`hover:bg-daramis-green`)
-   - Typography: `font-nudista` pro vizuální hierarchii
-   - Smooth transition
+   - Hover efekt: `hover:bg-daramis-green` — plynulá změna barvy
+   - Typography: `font-nudista text-xl` pro vizuální důraz
+   - Spacing: `py-4 px-10 mt-4`
 
-**Styling přístupy:**
-- **Transparentní background**: `bg-transparent` — formulář se snoubí s Footer
-- **Minimalistický design**: pouze spodní borde místo plného rámce
-- **Accessibility**: všechna pole mají labely s označením povinnosti (`*`)
-- **Responsive**: flexbox layout automaticky se přizpůsobí obrazovce
+**Designové přístupy:**
+- **Transparentní background**: `bg-transparent` — harmonizuje s Footer
+- **Minimalistický design**: pouze spodní borde (minimalistický look)
+- **Barevná diferenciace**:
+  - Tmavé prvky (jméno, email): bordry `daramis-darkest`, focus `daramis-green`
+  - Světlé prvky (zpráva, dropdown, checkboxy): bordry `daramis-creamy`, focus `daramis-yellow`
+- **Accessibility**: všechna pole mají labely, checkboxy jsou clickable (rozšířená hit area)
+- **Responsive**: flexbox layout se přizpůsobí mobilu i desktopu
 
 ## 2. State management a validace
 *Zde vysvětlím, jak řeším stavy formuláře (idle, loading, success, error) a proč jsem zvolil daný způsob validace.*

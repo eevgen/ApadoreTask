@@ -15,7 +15,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <link rel="stylesheet" href="https://use.typekit.net/gsb0toh.css" />
         </head>
         {/* setting cream background and black text for the whole page */}
-        <body className="antialiased bg-daramis-creamy text-daramis-darkest">D
+        <body className="antialiased bg-daramis-creamy text-daramis-darkest">
         {children}
         </body>
         </html>

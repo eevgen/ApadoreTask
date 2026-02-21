@@ -52,8 +52,53 @@ Globálně aplikovány Tailwind třídy:
 Tímto je zajištěna konzistentní vizuální identita na celé aplikaci.
 
 ## 1. Architektura komponent
-*Zde popíšu, jak jsem rozčlenil footer (např. hlavní kontejner, formulář, UI prvky).*
-*(Bude doplněno v průběhu vývoje)*
+
+### `app/layout.tsx` — Root Layout
+Hlavní obal aplikace, který:
+- Nastavuje metadata (title, description) pro SEO
+- Importuje `globals.css` s Tailwind konfigurací
+- Aplikuje globální Tailwind třídy: `bg-daramis-creamy`, `text-daramis-darkest`, `antialiased`
+- Připojuje Adobe Typekit CDN pro vlastní fonty (Nudista)
+- Nastavuje jazyk stránky (`lang="cs"`)
+
+```tsx
+<html lang="cs" className="font-arial">
+  <head>
+    <link rel="stylesheet" href="https://use.typekit.net/gsb0toh.css" />
+  </head>
+  <body className="antialiased bg-daramis-creamy text-daramis-darkest">
+    {children}
+  </body>
+</html>
+```
+
+### `app/page.tsx` — Home Page
+Hlavní stránka s:
+- **Main container**: `min-h-screen flex flex-col justify-end` — obsadí minimálně výšku obrazovky a push Footer k dnu
+- **Centrovaný obsah**: placeholder text "Website Content" uprostřed
+- **Footer komponenta**: importuje a renderuje Footer na dno stránky
+
+Flexbox struktura zajišťuje, že Footer zůstane vždy na konci stránky, i když je málo obsahu.
+
+### `components/Footer.tsx` — Footer Komponenta
+Samostatná komponenta s design system barvami:
+- **Pozadí**: `bg-daramis-green` (`#3A4035`)
+- **Text**: `text-daramis-creamy` pro kontrast
+- **Rámec**: `border-2 border-daramis-yellow` (`#E5B962`)
+- **Typography**: Nadpis v `font-nudista`, text v `font-arial`
+- **Padding/Spacing**: `py-20 px-4 md:px-10` — responsivní padding
+- **Max-width**: `max-w-7xl` — omezuje šířku na desktopech
+
+```tsx
+<footer className="bg-daramis-green text-daramis-creamy w-full py-20 px-4 md:px-10">
+  <div className="max-w-7xl mx-auto border-2 border-daramis-yellow p-10">
+    <h1 className="font-nudista text-4xl mb-4">Test Text</h1>
+    <p className="font-arial text-lg">Future Contact Form</p>
+  </div>
+</footer>
+```
+
+Komponenta je připravena pro budoucí rozšíření (formulář, kontakty, newsletter).
 
 ## 2. State management a validace
 *Zde vysvětlím, jak řeším stavy formuláře (idle, loading, success, error) a proč jsem zvolil daný způsob validace.*

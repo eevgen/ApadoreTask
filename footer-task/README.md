@@ -30,6 +30,27 @@ Přidal jsem podporu pro dvě custom fonty:
 - **Nudista** — preferovaný font pro projekt
 - **Arial** — fallback sans-serif
 
+## Globální nastavení (Root Layout)
+
+V `app/layout.tsx` jsem nakonfiguroval:
+
+### Metadata
+- **Title**: "Daramis Footer" — název aplikace
+- **Description**: "Test task frontend developer" — popis pro SEO
+
+### HTML & Head
+- **Jazyk**: `lang="cs"` — nastaveno na češtinu
+- **Default font**: `font-arial` — Arial je výchozí font
+- **Adobe Typekit**: Připojen stylesheet s vlastními fonty (`Nudista`) přes CDN
+
+### Body styles
+Globálně aplikovány Tailwind třídy:
+- `bg-daramis-creamy` — krémová barva pozadí
+- `text-daramis-darkest` — tmavě šedý text (přesně podle design systému)
+- `antialiased` — vyhlazení okrajů textu pro lepší vzhled
+
+Tímto je zajištěna konzistentní vizuální identita na celé aplikaci.
+
 ## 1. Architektura komponent
 *Zde popíšu, jak jsem rozčlenil footer (např. hlavní kontejner, formulář, UI prvky).*
 *(Bude doplněno v průběhu vývoje)*

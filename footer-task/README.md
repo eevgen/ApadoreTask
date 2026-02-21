@@ -81,28 +81,54 @@ Hlavní stránka s:
 Flexbox struktura zajišťuje, že Footer zůstane vždy na konci stránky, i když je málo obsahu.
 
 ### `components/Footer.tsx` — Footer Komponenta
-Samostatná komponenta s design system barvami:
-- **Pozadí**: `bg-daramis-green` (`#3A4035`)
-- **Text**: `text-daramis-creamy` pro kontrast
-- **Rámec**: `border-2 border-daramis-yellow` (`#E5B962`)
-- **Typography**: Nadpis v `font-nudista`, text v `font-arial`
-- **Padding/Spacing**: `py-20 px-4 md:px-10` — responsivní padding
-- **Max-width**: `max-w-7xl` — omezuje šířku na desktopech
+Footer s 2-sloupcovým layoutem (mobilní: 1 sloupec, desktop: 2 sloupce):
+
+**Levý sloupec:**
+- Nadpis v `font-nudista` (text-5xl na mobilu, text-7xl na desktopu)
+- Popisný text s aplikovanou opacity pro jemný kontrast
+- Inspirativní obsah o projektu
+
+**Pravý sloupec:**
+- Integrace `LeadForm` komponenty pro sběr kontaktů
 
 ```tsx
-<footer className="bg-daramis-green text-daramis-creamy w-full py-20 px-4 md:px-10">
-  <div className="max-w-7xl mx-auto border-2 border-daramis-yellow p-10">
-    <h1 className="font-nudista text-4xl mb-4">Test Text</h1>
-    <p className="font-arial text-lg">Future Contact Form</p>
-  </div>
-</footer>
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+  {/* Levý sloupec: headline + popis */}
+  {/* Pravý sloupec: formulář */}
+  <LeadForm />
+</div>
 ```
 
-Komponenta je připravena pro budoucí rozšíření (formulář, kontakty, newsletter).
+### `components/LeadForm.tsx` — Lead Form Komponenta
+Client-side komponenta (`"use client"`) pro sběr dat potenciálních klientů.
+
+**Struktura formuláře:**
+
+1. **Řádek 1 — Jméno + Příjmení**
+   - Textová pole se spodním bordrem (`border-b border-daramis-darkest`)
+   - Focus efekt: border změní na zelenou (`focus:border-daramis-green`)
+   - Responsivní: na mobilu pod sebou, na desktopu vedle sebe (`md:flex-row`)
+
+2. **Řádek 2 — Telefonní číslo + E-mail**
+   - Stejný design jako řádek 1
+   - Input typy: `tel` a `email` pro nativní validaci
+   - E-mail pole je povinné (označeno `*`)
+
+3. **Tlačítko "ODESLAT"**
+   - Design: `bg-daramis-darkest` text `text-daramis-white`
+   - Hover efekt: pozadí se změní na zelenou (`hover:bg-daramis-green`)
+   - Typography: `font-nudista` pro vizuální hierarchii
+   - Smooth transition
+
+**Styling přístupy:**
+- **Transparentní background**: `bg-transparent` — formulář se snoubí s Footer
+- **Minimalistický design**: pouze spodní borde místo plného rámce
+- **Accessibility**: všechna pole mají labely s označením povinnosti (`*`)
+- **Responsive**: flexbox layout automaticky se přizpůsobí obrazovce
 
 ## 2. State management a validace
 *Zde vysvětlím, jak řeším stavy formuláře (idle, loading, success, error) a proč jsem zvolil daný způsob validace.*
-*(Bude doplněno v průběhu vývoje)*
+*(Bude doplněno v průběhu vývoje - přidány input fieldy, připraveno pro implementaci)*
 
 ## 3. Rizika a edge cases
 *Zde popíšu, jak aplikace reaguje, když uživatel klikne na "Odeslat" 10x za sekundu, a co se stane při výpadku API.*

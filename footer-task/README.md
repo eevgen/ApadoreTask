@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Daramis Footer - Test Task (Front-end Developer)
 
-## Getting Started
+Tento repozitář obsahuje řešení testovacího zadání pro pozici Front-end Developer.
+Projekt je postaven na Next.js (App Router), TypeScriptu a Tailwind CSS.
 
-First, run the development server:
+## Tailwind CSS Konfigurace
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+V projektu je nastaven `tailwind.config.ts` s následujícím nastavením:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Content Paths
+Nakonfiguroval jsem cesty pro skenování souborů:
+- `./app/**/*.{js,ts,jsx,tsx,mdx}` — sleduje všechny komponenty v App Router
+- `./components/**/*.{js,ts,jsx,tsx,mdx}` — sleduje komponenty v adresáři components
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Takto Tailwind správně generuje pouze CSS, které se v projektu skutečně používá.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Vlastní barvy (Daramis Design System)
+Vytvořil jsem vlastní barevnou paletu `daramis` jako rozšíření defaultních Tailwind barev (bez jejich přepsání):
+- **Green** (`#3A4035`) — pozadí sekcí
+- **Darkest** (`#1A1A1A`) — primární barva tlačítek
+- **Dark** (`#2A2D27`) — pozadí a sekundární inverzní tlačítka
+- **Yellow** (`#E5B962`) — akcentuální žlutá
+- **Creamy** (`#EBE6E0`) — světlé pozadí sekcí
+- **Creamy 2** (`#C4BCB3`) — dekorativní texty a odkazy
+- **White** (`#FFFFFF`) — primární bílá
+- **Error** (`#D34B4B`) — chybové hlášky
 
-## Learn More
+### Vlastní fonty
+Přidal jsem podporu pro dvě custom fonty:
+- **Nudista** — preferovaný font pro projekt
+- **Arial** — fallback sans-serif
 
-To learn more about Next.js, take a look at the following resources:
+## 1. Architektura komponent
+*Zde popíšu, jak jsem rozčlenil footer (např. hlavní kontejner, formulář, UI prvky).*
+*(Bude doplněno v průběhu vývoje)*
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 2. State management a validace
+*Zde vysvětlím, jak řeším stavy formuláře (idle, loading, success, error) a proč jsem zvolil daný způsob validace.*
+*(Bude doplněno v průběhu vývoje)*
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 3. Rizika a edge cases
+*Zde popíšu, jak aplikace reaguje, když uživatel klikne na "Odeslat" 10x za sekundu, a co se stane při výpadku API.*
+*(Bude doplněno v průběhu vývoje)*
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Jak spustit projekt lokálně
+1. `npm install`
+2. `npm run dev`
+3. Otevřít [http://localhost:3000](http://localhost:3000)

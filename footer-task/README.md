@@ -121,13 +121,15 @@ Client-side komponenta (`"use client"`) pro sběr dat potenciálních klientů s
    - `resize-none` — zakáže změnu velikosti uživatelem
    - Placeholder styling: `placeholder:text-daramis-creamy placeholder:opacity-30`
 
-4. **Řádek 4 — Dropdown "O jaký byt máte zájem?"**
-   - `<select>` s opcemi: 1+KK, 2+KK, 3+KK, 4+KK
-   - Styling: `bg-transparent border-b border-daramis-creamy`
-   - Focus: border změní na žlutou (`focus:border-daramis-yellow`)
-   - Text: `text-daramis-creamy` (viditelné na zeleném pozadí)
-   - Option texty: `text-daramis-darkest` (pro viditelnost v systémovém dropdown menu)
-   - `cursor-pointer` pro lepší UX
+4. **Řádek 4 — Radio Buttons "O jaký byt máte zájem?"** (React State)
+   - **State management**: `const [flatType, setFlatType] = useState<"1+KK" | "2+KK" | "3+KK" | "4+KK" | "">("")`
+   - Skryté radio inputs (`className="hidden"`) s správným `id`, `name`, `value`
+   - **Kustom label styling** jako pill buttons:
+     - **Nevybraný stav**: `border-daramis-creamy text-daramis-creamy/80`
+     - **Vybraný stav**: `bg-daramis-yellow text-daramis-darkest border-daramis-yellow`
+     - **Hover stav**: `hover:border-daramis-yellow` (i když nevybraný)
+   - Design: `rounded-full border px-4 py-2 transition-colors` — hladký přechod barev
+   - `cursor-pointer` na labelech pro lepší UX
 
 5. **Řádek 5 — Checkboxy (2 položky)**
    - **Newsletter**: "Chci být součástí newsletteru Daramis..."
@@ -137,23 +139,72 @@ Client-side komponenta (`"use client"`) pro sběr dat potenciálních klientů s
    - Interaktivita: `group-hover:opacity-100` — text se zvýrazní při hover
 
 6. **Tlačítko "ODESLAT"** (footer formuláře)
-   - Design: `bg-daramis-darkest` text `text-daramis-white`
-   - Hover efekt: `hover:bg-daramis-green` — plynulá změna barvy
+   - Design: `bg-daramis-yellow text-daramis-darkest` — výrazné a kontrastu
+   - Hover efekt: `hover:bg-daramis-green` + `hover:opacity-90` — změní barvu a trochu průhlednost
+   - Type: `type="submit"` — korektně submit formulář
    - Typography: `font-nudista text-xl` pro vizuální důraz
    - Spacing: `py-4 px-10 mt-4`
 
 **Designové přístupy:**
 - **Transparentní background**: `bg-transparent` — harmonizuje s Footer
-- **Minimalistický design**: pouze spodní borde (minimalistický look)
-- **Barevná diferenciace**:
-  - Tmavé prvky (jméno, email): bordry `daramis-darkest`, focus `daramis-green`
-  - Světlé prvky (zpráva, dropdown, checkboxy): bordry `daramis-creamy`, focus `daramis-yellow`
-- **Accessibility**: všechna pole mají labely, checkboxy jsou clickable (rozšířená hit area)
-- **Responsive**: flexbox layout se přizpůsobí mobilu i desktopu
+- **Minimalistický design**: pouze spodní borde (čistý, moderní look)
+- **Jednotná barevná schéma**:
+  - **Všechna textová pole**: bordry `daramis-creamy`, text `daramis-creamy`
+  - **Focus efekt**: všechny borde změní na žlutou (`focus:border-daramis-yellow`)
+  - **Placeholdery**: `placeholder:text-daramis-creamy placeholder:opacity-30`
+- **Radio buttons jako pill buttons**:
+  - Neviditelné inputy + kustom-stylované labely
+  - Vybraný stav: žlutý background (`bg-daramis-yellow`)
+  - Nevybraný stav: transparent s krémovým bordrem
+- **CTA tlačítko**:
+  - Výrazné: žlutý background s tmavým textem (`bg-daramis-yellow text-daramis-darkest`)
+  - Hover: změní na zelenou (`hover:bg-daramis-green`)
+- **Accessibility**: všechna pole mají labely, radio buttons a checkboxy mají rozšířenou clickable area
+- **Responsive**: flexbox layout se přizpůsobí mobilu (single column) i desktopu (2 sloupce)
 
 ## 2. State management a validace
-*Zde vysvětlím, jak řeším stavy formuláře (idle, loading, success, error) a proč jsem zvolil daný způsob validace.*
-*(Bude doplněno v průběhu vývoje - přidány input fieldy, připraveno pro implementaci)*
+
+### React State pro Radio Buttons
+Implementoval jsem React state pro sledování vybraného typu bytu:
+
+```tsx
+const [flatType, setFlatType] = React.useState<"1+KK" | "2+KK" | "3+KK" | "4+KK" | "">("");
+```
+
+**Proč TypeScript union type?**
+- Zabezpečuje, že pouze validní hodnoty mohou být uloženy
+- `""` (prázdný string) = počáteční stav (nic nevybrané)
+- Čtyři možné byty: `"1+KK" | "2+KK" | "3+KK" | "4+KK"`
+
+**Implementace v UI:**
+Každá radio button má svůj `onChange` handler:
+```tsx
+checked={flatType === "1+KK"}
+onChange={() => setFlatType("1+KK")}
+```
+
+**Podmínené stylizování:**
+```tsx
+className={
+    "cursor-pointer rounded-full border px-4 py-2 font-arial text-sm transition-colors " +
+    (flatType === "1+KK"
+        ? "bg-daramis-yellow text-daramis-darkest border-daramis-yellow"
+        : "border-daramis-creamy text-daramis-creamy/80 hover:border-daramis-yellow")
+}
+```
+
+### Validace (připraveno)
+*Zde budou přidány:*
+- *Validace povinných polí (Jméno, E-mail)*
+- *Regex validace pro email a telefonní číslo*
+- *Zobrazení error messages*
+
+### Form States (připraveno)
+*Plán na implementaci:*
+- *`idle` — výchozí stav*
+- *`loading` — formulář se odesílá*
+- *`success` — úspěšné odeslání*
+- *`error` — chyba při odesílání*
 
 ## 3. Rizika a edge cases
 *Zde popíšu, jak aplikace reaguje, když uživatel klikne na "Odeslat" 10x za sekundu, a co se stane při výpadku API.*

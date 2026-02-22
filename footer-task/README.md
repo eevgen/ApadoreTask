@@ -193,22 +193,97 @@ className={
 }
 ```
 
-### Validace (připraveno)
-*Zde budou přidány:*
-- *Validace povinných polí (Jméno, E-mail)*
-- *Regex validace pro email a telefonní číslo*
-- *Zobrazení error messages*
+### Form States
+Implementoval jsem plný lifecycle stavů formuláře:
 
-### Form States (připraveno)
-*Plán na implementaci:*
-- *`idle` — výchozí stav*
-- *`loading` — formulář se odesílá*
-- *`success` — úspěšné odeslání*
-- *`error` — chyba při odesílání*
+```tsx
+const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+```
+
+| Stav | Popis | UI reakce |
+|------|-------|-----------|
+| `idle` | Výchozí stav | Formulář je interaktivní |
+| `loading` | Probíhá odesílání | Tlačítko deaktivováno, text "ODESÍLÁM..." |
+| `success` | Úspěšné odeslání | Formulář skryt, zobrazena děkovná zpráva |
+| `error` | Chyba backendu | Zobrazena chybová hláška, formulář dostupný |
+
+### Mock Backend — Simulace sítě
+
+Implementoval jsem mock backend funkci, která simuluje reálné podmínky sítě:
+
+```tsx
+const submitToMockBackend = async function () {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const random = Math.random();
+            if (random < 0.1) {
+                reject(new Error("Simulated backend error"));
+            } else {
+                resolve("Success");
+            }
+        }, 1500);
+    });
+}
+```
+
+**Co simuluje:**
+- **Latence sítě**: `setTimeout 1500ms` — realistická prodleva API requestu
+- **Náhodná chyba**: 10 % požadavků selže (`random < 0.1`) — testuje, jak frontend reaguje na selhání
+
+### handleSubmit — Async logika odesílání
+
+```tsx
+const handleSubmit = async function (e: React.SubmitEvent) {
+    e.preventDefault();
+    setStatus('loading');
+    try {
+        await submitToMockBackend();
+        setStatus("success");
+    } catch (error) {
+        setStatus("error");
+    }
+};
+```
+
+**Tok dat:**
+1. `e.preventDefault()` — zabrání výchozímu chování prohlížeče (reload stránky)
+2. `setStatus('loading')` — okamžitě deaktivuje tlačítko
+3. `await submitToMockBackend()` — čeká 1.5s na odpověď
+4. **Success path**: `setStatus("success")` — formulář se nahradí děkovnou zprávou
+5. **Error path**: `setStatus("error")` — zobrazí chybovou hlášku, formulář zůstane dostupný
+
+### UI reakce na jednotlivé stavy
+
+**Loading:**
+```tsx
+disabled={status === 'loading'}
+className={status === 'loading'
+    ? 'bg-daramis-creamy-2 text-daramis-darkest cursor-not-allowed'
+    : 'bg-daramis-darkest text-daramis-white hover:bg-daramis-dark'
+}
+```
+- Tlačítko: deaktivováno (`disabled`), šedý background (`creamy-2`), `cursor-not-allowed`
+- Text: "ODESLAT" → "ODESÍLÁM..."
+
+**Success:**
+- Celý formulář je nahrazen komponentou s poděkováním
+- Text v `font-nudista` pro konzistenci s designem
+
+**Error:**
+- Chybová hláška nad tlačítkem: `text-daramis-error` (`#D34B4B`)
+- Formulář zůstane dostupný — uživatel může zkusit znovu
 
 ## 3. Rizika a edge cases
-*Zde popíšu, jak aplikace reaguje, když uživatel klikne na "Odeslat" 10x za sekundu, a co se stane při výpadku API.*
-*(Bude doplněno v průběhu vývoje)*
+
+### Kliknutí na "Odeslat" vícekrát za sebou
+Tlačítko je při odesílání ihned deaktivováno (`disabled={status === 'loading'}`). Uživatel nemůže odeslat formulář vícekrát — druhý klik je ignorován na úrovni DOM.
+
+### Výpadek API / chyba backendu
+`handleSubmit` obaluje volání v `try/catch`. Při jakékoliv chybě:
+- Stav se nastaví na `"error"`
+- Zobrazí se chybová hláška
+- Formulář zůstane dostupný pro opakované odeslání
+- Uživatel **nepřijde o vyplněná data**
 
 ## Jak spustit projekt lokálně
 1. `npm install`

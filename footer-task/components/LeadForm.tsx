@@ -1,246 +1,208 @@
-"use client"; // КРИТИЧЕСКИ ВАЖНО: Формы в Next.js должны быть клиентскими компонентами, так как они работают с состоянием (вводом пользователя)
-
+"use client";
 
 import { useState } from "react";
 
+const inputClass =
+    "bg-transparent border border-primary-creamy/40 rounded-[4px] px-3 py-2 font-arial text-primary-creamy outline-none " +
+    "hover:border-primary-accent/70 focus:border-primary-accent transition-colors " +
+    "placeholder:text-primary-creamy/30 w-full";
+
+const errorInputClass =
+    "bg-transparent border border-error rounded-[4px] px-3 py-2 font-arial text-primary-creamy outline-none " +
+    "focus:border-error transition-colors placeholder:text-primary-creamy/30 w-full";
+
+const inputStyle = { fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" };
+
+const labelClass = "font-arial text-primary-creamy/60 mb-1";
+
 export default function LeadForm() {
-
     const [flatType, setFlatType] = useState<"1+KK" | "2+KK" | "3+KK" | "4+KK" | "">("");
-
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-
-
-
-
+    const [emailError, setEmailError] = useState(false);
 
     const submitToMockBackend = async function () {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                const random = Math.random(); //random number between 0 and 1
-                if (random < 0.1) {
+                if (Math.random() < 0.1) {
                     reject(new Error("Simulated backend error"));
                 } else {
                     resolve("Success");
                 }
             }, 1500);
         });
-    }
+    };
 
-    const handleSubmit = async function (e: React.SubmitEvent) {
+    const handleSubmit = async function (e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        setStatus('loading');
+        setEmailError(false);
+        setStatus("loading");
 
         try {
             await submitToMockBackend();
             setStatus("success");
-        } catch (error) {
+        } catch {
             setStatus("error");
         }
     };
 
-    if(status === "success") {
+    if (status === "success") {
         return (
-            <div className="flex flex-col justify-center items-start h-full">
-                <h2 className="font-nudista text-3xl text-daramis-creamy mb-4">
-                    DĚKUJEME ZA ODESLÁNÍ FORMULÁŘE!
+            <div className="flex flex-col justify-center items-start h-full gap-4">
+                <h2 className="font-nudista text-primary-creamy uppercase" style={{ fontSize: "32px" }}>
+                    Děkujeme za odeslání formuláře!
                 </h2>
-                <p className="font-arial text-daramis-creamy opacity-80">
+                <p className="font-arial text-primary-creamy/80" style={{ fontSize: "var(--text-paragraph)", lineHeight: "var(--leading-paragraph)" }}>
                     Brzy se vám ozveme.
                 </p>
             </div>
         );
     }
 
-
-
-
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-8 w-full">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full">
 
-            {/* First raw: name + surname */}
-            <div className="flex flex-col md:flex-row gap-8">
+            {/* Row 1: Křestní jméno + Příjmení */}
+            <div className="flex flex-col md:flex-row gap-5">
                 <div className="flex flex-col w-full">
-                    <label className="font-arial text-sm mb-2 text-daramis-creamy opacity-60">Křestní jméno *</label>
+                    <label className={labelClass} style={inputStyle}>Křestní jméno *</label>
                     <input
                         type="text"
                         placeholder="Vaše jméno"
-                        className="bg-transparent border-b border-daramis-creamy py-2 font-arial outline-none focus:border-daramis-yellow transition-colors placeholder:text-daramis-creamy placeholder:opacity-30"
+                        className={inputClass}
+                        style={inputStyle}
                     />
                 </div>
-
                 <div className="flex flex-col w-full">
-                    <label className="font-arial text-sm mb-2 text-daramis-creamy opacity-60">Příjmení</label>
+                    <label className={labelClass} style={inputStyle}>Příjmení *</label>
                     <input
                         type="text"
                         placeholder="Vaše příjmení"
-                        className="bg-transparent border-b border-daramis-creamy py-2 font-arial outline-none focus:border-daramis-yellow transition-colors placeholder:text-daramis-creamy placeholder:opacity-30"
+                        className={inputClass}
+                        style={inputStyle}
                     />
                 </div>
             </div>
 
-            {/* Second raw: email + phone number */}
-            <div className="flex flex-col md:flex-row gap-8">
-                <div className="flex flex-col w-full">
-                    <label className="font-arial text-sm mb-2 text-daramis-creamy opacity-60">Telefonní číslo</label>
-                    <input
-                        type="tel"
-                        placeholder="+420"
-                        className="bg-transparent border-b border-daramis-creamy py-2 font-arial outline-none focus:border-daramis-yellow transition-colors placeholder:text-daramis-creamy placeholder:opacity-30"
-                    />
-                </div>
-
-                <div className="flex flex-col w-full">
-                    <label className="font-arial text-sm mb-2 text-daramis-creamy opacity-60">E-mail *</label>
-                    <input
-                        type="email"
-                        placeholder="Váš e-mail"
-                        className="bg-transparent border-b border-daramis-creamy py-2 font-arial outline-none focus:border-daramis-yellow transition-colors placeholder:text-daramis-creamy placeholder:opacity-30"
-                    />
-                </div>
-            </div>
-
-            {/* Third raw: Zpráva */}
+            {/* Row 2: Telefonní číslo (full width) */}
             <div className="flex flex-col w-full">
-                <label className="font-arial text-sm mb-2 text-daramis-creamy opacity-60">Zpráva</label>
+                <label className={labelClass} style={inputStyle}>Telefonní číslo *</label>
+                <input
+                    type="tel"
+                    placeholder="Vaše telefonní číslo"
+                    className={inputClass}
+                    style={inputStyle}
+                />
+            </div>
+
+            {/* Row 3: E-mail (full width) */}
+            <div className="flex flex-col w-full">
+                <div className="flex items-center justify-between mb-1">
+                    <label className={labelClass + " mb-0"} style={inputStyle}>E-mail *</label>
+                    {emailError && (
+                        <span className="font-arial text-error" style={inputStyle}>
+                            Hláška erroru
+                        </span>
+                    )}
+                </div>
+                <input
+                    type="email"
+                    placeholder="Váš e-mail"
+                    className={emailError ? errorInputClass : inputClass}
+                    style={inputStyle}
+                />
+            </div>
+
+            {/* Row 4: Zpráva */}
+            <div className="flex flex-col w-full">
+                <label className={labelClass} style={inputStyle}>Zpráva</label>
                 <textarea
                     placeholder="Jak vám můžeme pomoci?"
-                    rows={1}
-                    className="bg-transparent border-b border-daramis-creamy py-2 font-arial outline-none focus:border-daramis-yellow transition-colors placeholder:text-daramis-creamy placeholder:opacity-30 resize-none"
-                ></textarea>
+                    rows={3}
+                    className={
+                        "bg-transparent border border-primary-creamy/40 rounded-[4px] px-3 py-2 font-arial text-primary-creamy outline-none " +
+                        "hover:border-primary-accent/70 focus:border-primary-accent transition-colors " +
+                        "placeholder:text-primary-creamy/30 resize-none w-full"
+                    }
+                    style={inputStyle}
+                />
             </div>
 
-            {/* Fourth raw: Select */}
+            {/* Row 5: Typ bytu */}
             <div className="flex flex-col w-full">
-                <label className="font-arial text-sm mb-2 text-daramis-creamy opacity-60">
-                    O jaký byt máte zájem?
-                </label>
-
-                <div className="flex flex-wrap gap-3">
-                    {/* First option "1+KK" */}
-                    <input
-                        type="radio"
-                        id="flat-1kk"
-                        name="flatType"
-                        value="1+KK"
-                        className="hidden"
-                        checked={flatType === "1+KK"}
-                        onChange={() => setFlatType("1+KK")}
-                    />
-
-                    <label
-                        htmlFor="flat-1kk"
-                        className={
-                            "cursor-pointer rounded-full border px-4 py-2 font-arial text-sm transition-colors " +
-                            (flatType === "1+KK"
-                                ? "bg-daramis-yellow text-daramis-darkest border-daramis-yellow"
-                                : "border-daramis-creamy text-daramis-creamy/80 hover:border-daramis-yellow")
-                        }
-                    >
-                        1+KK
-                    </label>
-
-                    {/* Second option "2+KK" */}
-                    <input
-                        type="radio"
-                        id="flat-2kk"
-                        name="flatType"
-                        value="2+KK"
-                        className="hidden"
-                        checked={flatType === "2+KK"}
-                        onChange={() => setFlatType("2+KK")}
-                    />
-                    <label
-                        htmlFor="flat-2kk"
-                        className={
-                            "cursor-pointer rounded-full border px-4 py-2 font-arial text-sm transition-colors " +
-                            (flatType === "2+KK"
-                                ? "bg-daramis-yellow text-daramis-darkest border-daramis-yellow"
-                                : "border-daramis-creamy text-daramis-creamy/80 hover:border-daramis-yellow")
-                        }
-                    >
-                        2+KK
-                    </label>
-
-                    {/* Third option "3+KK" */}
-                    <input
-                        type="radio"
-                        id="flat-3kk"
-                        name="flatType"
-                        value="3+KK"
-                        className="hidden"
-                        checked={flatType === "3+KK"}
-                        onChange={() => setFlatType("3+KK")}
-                    />
-                    <label
-                        htmlFor="flat-3kk"
-                        className={
-                            "cursor-pointer rounded-full border px-4 py-2 font-arial text-sm transition-colors " +
-                            (flatType === "3+KK"
-                                ? "bg-daramis-yellow text-daramis-darkest border-daramis-yellow"
-                                : "border-daramis-creamy text-daramis-creamy/80 hover:border-daramis-yellow")
-                        }
-                    >
-                        3+KK
-                    </label>
-
-                    {/* Fourth option "4+KK" */}
-                    <input
-                        type="radio"
-                        id="flat-4kk"
-                        name="flatType"
-                        value="4+KK"
-                        className="hidden"
-                        checked={flatType === "4+KK"}
-                        onChange={() => setFlatType("4+KK")}
-                    />
-                    <label
-                        htmlFor="flat-4kk"
-                        className={
-                            "cursor-pointer rounded-full border px-4 py-2 font-arial text-sm transition-colors " +
-                            (flatType === "4+KK"
-                                ? "bg-daramis-yellow text-daramis-darkest border-daramis-yellow"
-                                : "border-daramis-creamy text-daramis-creamy/80 hover:border-daramis-yellow")
-                        }
-                    >
-                        4+KK
-                    </label>
+                <label className={labelClass} style={inputStyle}>O jaký byt máte zájem?</label>
+                <div className="flex flex-wrap gap-2 mt-1">
+                    {(["1+KK", "2+KK", "3+KK", "4+KK"] as const).map((option) => (
+                        <label
+                            key={option}
+                            className={
+                                "cursor-pointer border rounded-[4px] px-4 py-1.5 font-arial transition-colors " +
+                                (flatType === option
+                                    ? "bg-primary-accent text-primary-darkest border-primary-accent"
+                                    : "border-primary-creamy/40 text-primary-creamy/80 hover:border-primary-accent/70")
+                            }
+                            style={inputStyle}
+                        >
+                            <input
+                                type="radio"
+                                name="flatType"
+                                value={option}
+                                className="hidden"
+                                checked={flatType === option}
+                                onChange={() => setFlatType(option)}
+                            />
+                            {option}
+                        </label>
+                    ))}
                 </div>
             </div>
 
-            {/* Fifth raw: checkboxes */}
-            <div className="flex flex-col gap-4 mt-2">
-                <label className="flex items-start gap-4 cursor-pointer group">
-                    <input type="checkbox" className="mt-1 w-5 h-5 accent-daramis-yellow cursor-pointer" />
-                    <span className="font-arial text-xs text-daramis-creamy opacity-60 group-hover:opacity-100 transition-opacity leading-relaxed">
+            {/* Row 6: Checkboxes */}
+            <div className="flex flex-col gap-3">
+                <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                        type="checkbox"
+                        className="mt-0.5 w-4 h-4 accent-primary-accent cursor-pointer shrink-0"
+                    />
+                    <span className="font-arial text-primary-creamy/60 group-hover:text-primary-creamy transition-colors" style={inputStyle}>
                         Chci být součástí newsletteru Daramis a získávat všechny novinky a informace.
                     </span>
                 </label>
-                <label className="flex items-start gap-4 cursor-pointer group">
-                    <input type="checkbox" className="mt-1 w-5 h-5 accent-daramis-yellow cursor-pointer" />
-                    <span className="font-arial text-xs text-daramis-creamy opacity-60 group-hover:opacity-100 transition-opacity leading-relaxed">
-                        Odesláním formuláře souhlasím se zpracováním osobních údajů v souladu se zásadami ochrany osobních údajů.
+                <label className="flex items-start gap-3 cursor-pointer group">
+                    <input
+                        type="checkbox"
+                        className="mt-0.5 w-4 h-4 accent-primary-accent cursor-pointer shrink-0"
+                    />
+                    <span className="font-arial text-primary-creamy/60 group-hover:text-primary-creamy transition-colors" style={inputStyle}>
+                        Odesláním formuláře souhlasíte se zpracováním{" "}
+                        <a href="#" className="underline hover:text-primary-accent transition-colors">
+                            zásad ochrany osobních údajů
+                        </a>
+                        .
                     </span>
                 </label>
             </div>
 
-            {status === 'error' && (
-                <div className="text-daramis-error font-nudista text-xl mt-2">
-                    NĚCO SE POKAŽILO. ZKUSTE TO PROSÍM ZNOVU.
-                </div>
-            )}
+            {/* Row 7: Submit button + inline error */}
+            <div className="flex items-center gap-6 mt-2">
+                <button
+                    type="submit"
+                    disabled={status === "loading"}
+                    className={`font-nudista uppercase tracking-widest py-3 px-8 rounded-full transition-all ${
+                        status === "loading"
+                            ? "bg-primary-creamy-2 text-primary-darkest cursor-not-allowed"
+                            : "bg-primary-accent text-primary-darkest hover:brightness-110 active:scale-95"
+                    }`}
+                    style={inputStyle}
+                >
+                    {status === "loading" ? "Odesílám..." : "Odeslat"}
+                </button>
 
-            {/* Send button  */}
-            <button
-                type="submit"
-                disabled={status === 'loading'}
-                className={`font-nudista text-xl py-4 px-10 mt-4 w-fit transition-colors ${
-                    status === 'loading'
-                        ? 'bg-daramis-creamy-2 text-daramis-darkest cursor-not-allowed'
-                        : 'bg-daramis-darkest text-daramis-white hover:bg-daramis-dark'
-                }`}
-            >
-                {status === 'loading' ? 'ODESÍLÁM...' : 'ODESLAT'}
-            </button>
+                {status === "error" && (
+                    <span className="font-arial text-error" style={inputStyle}>
+                        Něco se pokazilo. Zkuste to prosím znovu.
+                    </span>
+                )}
+            </div>
 
         </form>
     );

@@ -1,15 +1,45 @@
 @import "tailwindcss";
 
 @theme {
-    --color-daramis-green: #3A4035;
-    --color-daramis-darkest: #1A1A1A;
-    --color-daramis-dark: #2A2D27;
-    --color-daramis-yellow: #E5B962;
-    --color-daramis-creamy: #EBE6E0;
-    --color-daramis-creamy-2: #C4BCB3;
-    --color-daramis-white: #FFFFFF;
-    --color-daramis-error: #D34B4B;
+    --color-base-white: #FFFFFF;
+    --color-base-black: #000000;
+
+    --color-system-yellow: #FACC15;
+    --color-system-green: #22C55E;
+    --color-system-red: #EF4444;
+
+    --color-primary-green: #3A4035;
+    --color-primary-darkest: #2E2A24;
+    --color-primary-dark: var(--color-primary-darkest);
+    --color-primary-accent: #E2B162;
+    --color-primary-white: var(--color-base-white);
+    --color-primary-creamy: #E8DFD3;
+    --color-primary-creamy-2: #BBAF9F;
+
+    --color-error: #FF6060;
 
     --font-family-nudista: "Nudista", sans-serif;
     --font-family-arial: "Arial", sans-serif;
+
+    /* Typography - Desktop */
+    --text-h1-desktop: 160px;
+    --leading-h1-desktop: 160px;
+    --tracking-h1-desktop: -4px;
+
+    /* Typography - Mobile */
+    --text-h1-mobile: 52px;
+    --leading-h1-mobile: 46px;
+    --tracking-h1-mobile: -1.04px;
+
+    /* Paragraph text (18px) */
+    --text-paragraph: 18px;
+    --leading-paragraph: 27.9px;
+
+    /* Small text (16px) */
+    --text-small: 16px;
+    --leading-small: 24.8px;
+
+    /* Label text (12px) */
+    --text-label: 12px;
+    --leading-label: 15.6px;
 }

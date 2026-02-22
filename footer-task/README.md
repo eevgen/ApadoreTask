@@ -1,34 +1,55 @@
 # Daramis Footer - Test Task (Front-end Developer)
 
 Tento repozitář obsahuje řešení testovacího zadání pro pozici Front-end Developer.
-Projekt je postaven na Next.js (App Router), TypeScriptu a Tailwind CSS.
+Projekt je postaven na Next.js (App Router), TypeScriptu a Tailwind CSS v4 s novým `@theme` přístupem.
 
-## Tailwind CSS v4 — Nový přístup
+## Tailwind CSS v4 — Design System v `globals.css`
 
-Projekt používá **Tailwind CSS v4**, kde se konfiguraci provádí přímo v `globals.css` pomocí direktivy `@theme` místo tradičního `tailwind.config.ts`.
+Projekt používá **Tailwind CSS v4** s direktivou `@theme` přímo v `globals.css` namísto tradičního `tailwind.config.ts`.
 
-### Proč byla změněna konfigurace?
-V Tailwind v4 byl zaveden nový přístup:
-- **Starý přístup**: `tailwind.config.ts` + `@tailwind utilities` — již není podporován
-- **Nový přístup**: Konfigurační direktiva `@theme` přímo v CSS — moderněji a efektivněji
+```css
+@import "tailwindcss";
 
-Rozhodl jsem se použít nový přístup místo fallbacku `@config "./tailwind.config.ts"`, protože je to budoucnost Tailwind.
+@theme {
+    /* Barvy */
+    --color-primary-darkest: #2E2A24;
+    --color-primary-creamy: #E8DFD3;
+    --color-primary-accent: #E2B162;
+    /* ... další proměnné ... */
 
-### Vlastní barvy (Daramis Design System)
-Definoval jsem barevnou paletu přímo v `globals.css` pomocí CSS proměnných:
-- **Green** (`--color-daramis-green: #3A4035`) — pozadí sekcí
-- **Darkest** (`--color-daramis-darkest: #1A1A1A`) — primární barva tlačítek
-- **Dark** (`--color-daramis-dark: #2A2D27`) — pozadí a sekundární inverzní tlačítka
-- **Yellow** (`--color-daramis-yellow: #E5B962`) — akcentuální žlutá
-- **Creamy** (`--color-daramis-creamy: #EBE6E0`) — světlé pozadí sekcí
-- **Creamy 2** (`--color-daramis-creamy-2: #C4BCB3`) — dekorativní texty a odkazy
-- **White** (`--color-daramis-white: #FFFFFF`) — primární bílá
-- **Error** (`--color-daramis-error: #D34B4B`) — chybové hlášky
+    /* Typografie */
+    --text-h1-desktop: 160px;
+    --leading-h1-desktop: 160px;
+    --tracking-h1-desktop: -4px;
+    /* ... responsive variant ... */
+}
+```
+
+### Barevná paleta (Daramis Design System)
+- **Primary Darkest** (`#2E2A24`) — hlavní background
+- **Primary Creamy** (`#E8DFD3`) — primární text
+- **Primary Accent** (`#E2B162`) — akcentuální žlutá (nadpisy, hovers)
+- **Primary Creamy 2** (`#BBAF9F`) — sekundární text
+- **Color Error** (`#FF6060`) — chybové hlášky
+- **Base White** (`#FFFFFF`) — bílá
+- **Primary Green** (`#3A4035`) — sekundární background
+
+### Typografické tokeny
+**Desktop H1 (160px):**
+- Font size: `160px`
+- Line height: `160px`
+- Letter spacing: `-4px`
+
+**Mobile H1 (52px):**
+- Font size: `52px`
+- Line height: `46px`
+- Letter spacing: `-1.04px`
+
+**Paragraph (18px)**, **Small (16px)**, **Label (12px)** — definovány jako CSS proměnné
 
 ### Vlastní fonty
-Přidal jsem podporu pro dvě custom fonty jako CSS proměnné:
-- **Nudista** (`--font-family-nudista: "Nudista", sans-serif`) — preferovaný font pro projekt
-- **Arial** (`--font-family-arial: "Arial", sans-serif`) — fallback sans-serif
+- `--font-family-nudista: "Nudista", sans-serif` — primární font (nadpisy)
+- `--font-family-arial: "Arial", sans-serif` — sekundární font (text)
 
 ## Globální nastavení (Root Layout)
 
@@ -81,209 +102,216 @@ Hlavní stránka s:
 Flexbox struktura zajišťuje, že Footer zůstane vždy na konci stránky, i když je málo obsahu.
 
 ### `components/Footer.tsx` — Footer Komponenta
-Footer s 2-sloupcovým layoutem (mobilní: 1 sloupec, desktop: 2 sloupce):
 
-**Levý sloupec:**
-- Nadpis v `font-nudista` (text-5xl na mobilu, text-7xl na desktopu)
-- Popisný text s aplikovanou opacity pro jemný kontrast
-- Inspirativní obsah o projektu
+Footer je rozdělen do **2 hlavních sekcí**:
 
-**Pravý sloupec:**
-- Integrace `LeadForm` komponenty pro sběr kontaktů
+#### Up Section — Header s nadpisem a formulářem
 
-```tsx
-<div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-  {/* Levý sloupec: headline + popis */}
-  {/* Pravý sloupec: formulář */}
-  <LeadForm />
-</div>
-```
+**Mobilní layout:**
+- Nadpis: "Nepropásněte" (accent žlutá) + "život na Letné" (bílá)
+  - Velikost: `var(--text-h1-mobile)` (52px)
+  - Řádkování: `var(--leading-h1-mobile)` (46px)
+  - Kerning: `var(--tracking-h1-mobile)` (-1.04px)
+- Popis: "Máte otázky..." (16px, opacity 70%)
+- LeadForm komponenta pod textem
+- Kontaktní údaje oddělené bordrem
+
+**Desktop layout (lg breakpoint):**
+- **Raw 1**: "Nepropásněte" (160px, žlutá)
+- **Raw 2**: 2-sloupcový grid
+  - **Levý sloupec**: popis "Máte otázky..." (zarovnáno k dnu)
+  - **Pravý sloupec**: "život na Letné" (160px, bílá)
+- **Raw 3**: 2-sloupcový grid
+  - **Levý sloupec**: LeadForm
+  - **Pravý sloupec**: kontaktní údaje (email, telefon)
+
+#### Bottom Section — Navigace a info
+
+- **ESENS logo** (48px, nudista font)
+- **Navigační sloupce**: Lokalita, Kontakt + kontakty (email, telefon, adresa)
+- **Developer info**: DARAMIS
+- **Footer bar**: disclaimer, copyright © 2025, GDPR + Made by Apadore
+
+Všechna data jsou responzivní s breakpointy: `md:` a `lg:`
 
 ### `components/LeadForm.tsx` — Lead Form Komponenta
-Client-side komponenta (`"use client"`) pro sběr dat potenciálních klientů s komplexní strukturou.
 
-**Struktura formuláře:**
+Client-side komponenta (`"use client"`) pro sběr dat potenciálních klientů s plnou implementací state management, validace a error handling.
 
-1. **Řádek 1 — Jméno + Příjmení** (responsivní 2 sloupce)
-   - Textová pole se spodním bordrem (`border-b border-daramis-darkest`)
-   - Focus efekt: border změní na zelenou (`focus:border-daramis-green`)
-   - Přehlížeč spravuje validaci typu `text`
+**Struktura formuláře (7 řádků):**
 
-2. **Řádek 2 — Telefonní číslo + E-mail** (responsivní 2 sloupce)
-   - Input typy: `tel` a `email` pro nativní validaci
-   - E-mail pole je povinné (označeno `*`)
-   - Focus efekt stejný jako v řádku 1
+1. **Řádek 1 — Jméno + Příjmení** (responsivní: md:2 sloupce)
+   - Input typy: `text`
+   - Styling: `border border-primary-creamy/40 rounded-[4px]` (jemný border s 4px rádius)
+   - Focus efekt: `focus:border-primary-accent` (žlutá)
+   - Placeholder: `placeholder:text-primary-creamy/30`
 
-3. **Řádek 3 — Zpráva** (textarea)
-   - `<textarea>` s `rows={1}` pro začátek
-   - Border: `border-daramis-creamy` (světlejší barva pro vizuální odlišení)
-   - Focus: border změní na žlutou (`focus:border-daramis-yellow`)
-   - `resize-none` — zakáže změnu velikosti uživatelem
-   - Placeholder styling: `placeholder:text-daramis-creamy placeholder:opacity-30`
+2. **Řádek 2 — Telefonní číslo** (full width)
+   - Input type: `tel` pro nativní validaci
+   - Stejné styling jako řádek 1
+   - Povinné pole (označeno `*`)
 
-4. **Řádek 4 — Radio Buttons "O jaký byt máte zájem?"** (React State)
-   - **State management**: `const [flatType, setFlatType] = useState<"1+KK" | "2+KK" | "3+KK" | "4+KK" | "">("")`
-   - Skryté radio inputs (`className="hidden"`) s správným `id`, `name`, `value`
-   - **Kustom label styling** jako pill buttons:
-     - **Nevybraný stav**: `border-daramis-creamy text-daramis-creamy/80`
-     - **Vybraný stav**: `bg-daramis-yellow text-daramis-darkest border-daramis-yellow`
-     - **Hover stav**: `hover:border-daramis-yellow` (i když nevybraný)
-   - Design: `rounded-full border px-4 py-2 transition-colors` — hladký přechod barev
-   - `cursor-pointer` na labelech pro lepší UX
+3. **Řádek 3 — E-mail** (full width, **s error handling**)
+   - Input type: `email`
+   - **Error state**: `emailError` state zobrazuje chybovou zprávu vedle labelu
+   - **Error styling**: `border-error rounded-[4px]` — červená barva bordru
+   - Dva CSS classes: `inputClass` (normální) + `errorInputClass` (s chybou)
 
-5. **Řádek 5 — Checkboxy (2 položky)**
-   - **Newsletter**: "Chci být součástí newsletteru Daramis..."
-   - **GDPR**: "Odesláním formuláře souhlasím se zpracováním osobních údajů..."
-   - Styling: `accent-daramis-yellow` — volič změní barvu na žlutou
-   - Label struktura: `flex items-start gap-4` pro správné zarovnání
-   - Interaktivita: `group-hover:opacity-100` — text se zvýrazní při hover
+4. **Řádek 4 — Zpráva** (textarea)
+   - `rows={3}` — výchozí výška
+   - Border: `border-primary-creamy/40`
+   - Focus: `focus:border-primary-accent`
+   - `resize-none` — zapobraz změně velikosti
 
-6. **Tlačítko "ODESLAT"** (footer formuláře)
-   - Design: `bg-daramis-yellow text-daramis-darkest` — výrazné a kontrastu
-   - Hover efekt: `hover:bg-daramis-green` + `hover:opacity-90` — změní barvu a trochu průhlednost
-   - Type: `type="submit"` — korektně submit formulář
-   - Typography: `font-nudista text-xl` pro vizuální důraz
-   - Spacing: `py-4 px-10 mt-4`
+5. **Řádek 5 — Typ bytu** (Radio buttons s React State)
+   - **State**: `const [flatType, setFlatType] = useState<"1+KK" | "2+KK" | "3+KK" | "4+KK" | "">("")`
+   - Skryté radio inputs + kustom-stylované labely
+   - Vybraný stav: `bg-primary-accent text-primary-darkest border-primary-accent`
+   - Nevybraný stav: `border-primary-creamy/40 text-primary-creamy/80`
+   - Hover: `hover:border-primary-accent/70`
+   - Design: `rounded-[4px] px-4 py-1.5` — čtvercové knoflíky
 
-**Designové přístupy:**
-- **Transparentní background**: `bg-transparent` — harmonizuje s Footer
-- **Minimalistický design**: pouze spodní borde (čistý, moderní look)
-- **Jednotná barevná schéma**:
-  - **Všechna textová pole**: bordry `daramis-creamy`, text `daramis-creamy`
-  - **Focus efekt**: všechny borde změní na žlutou (`focus:border-daramis-yellow`)
-  - **Placeholdery**: `placeholder:text-daramis-creamy placeholder:opacity-30`
-- **Radio buttons jako pill buttons**:
-  - Neviditelné inputy + kustom-stylované labely
-  - Vybraný stav: žlutý background (`bg-daramis-yellow`)
-  - Nevybraný stav: transparent s krémovým bordrem
-- **CTA tlačítko**:
-  - Výrazné: žlutý background s tmavým textem (`bg-daramis-yellow text-daramis-darkest`)
-  - Hover: změní na zelenou (`hover:bg-daramis-green`)
-- **Accessibility**: všechna pole mají labely, radio buttons a checkboxy mají rozšířenou clickable area
-- **Responsive**: flexbox layout se přizpůsobí mobilu (single column) i desktopu (2 sloupce)
+6. **Řádek 6 — Checkboxy** (2 položky)
+   - **Newsletter**: "Chci být součástí newsletteru..."
+   - **GDPR**: "Odesláním formuláře..." + odkaz na "zásad ochrany osobních údajů"
+   - Styling: `accent-primary-accent` — žlutá barva checkbox
+   - Interaktivita: `group-hover:text-primary-creamy` — zvýraznění textu
 
-## 2. State management a validace
+7. **Řádek 7 — Submit button + Error message**
+   - Tlačítko: `bg-primary-accent text-primary-darkest` (žlutá)
+   - Loading stav: `bg-primary-creamy-2 cursor-not-allowed` + text "Odesílám..."
+   - Hover: `hover:brightness-110` (zesvětlení) + `active:scale-95` (stisku efekt)
+   - Design: `rounded-full py-3 px-8 uppercase tracking-widest` (veľký, výrazný)
+   - **Error hláška**: "Něco se pokazilo. Zkuste to prosím znovu." (červená, vedle tlačítka)
 
-### React State pro Radio Buttons
-Implementoval jsem React state pro sledování vybraného typu bytu:
-
+**Globální CSS classes:**
 ```tsx
-const [flatType, setFlatType] = React.useState<"1+KK" | "2+KK" | "3+KK" | "4+KK" | "">("");
+const inputClass =
+    "bg-transparent border border-primary-creamy/40 rounded-[4px] px-3 py-2 " +
+    "hover:border-primary-accent/70 focus:border-primary-accent transition-colors";
+
+const errorInputClass =
+    "bg-transparent border border-error rounded-[4px] px-3 py-2 " +
+    "focus:border-error transition-colors";
 ```
 
-**Proč TypeScript union type?**
-- Zabezpečuje, že pouze validní hodnoty mohou být uloženy
-- `""` (prázdný string) = počáteční stav (nic nevybrané)
-- Čtyři možné byty: `"1+KK" | "2+KK" | "3+KK" | "4+KK"`
+**Success state:**
+Když je `status === "success"`, formulář je nahrazen:
+- Nadpis: "Děkujeme za odeslání formuláře!" (32px, nudista, UPPERCASE)
+- Text: "Brzy se vám ozveme." (18px, creamy, opacity 80%)
 
-**Implementace v UI:**
-Každá radio button má svůj `onChange` handler:
-```tsx
-checked={flatType === "1+KK"}
-onChange={() => setFlatType("1+KK")}
-```
+## 2. State Management a Validace
 
-**Podmínené stylizování:**
-```tsx
-className={
-    "cursor-pointer rounded-full border px-4 py-2 font-arial text-sm transition-colors " +
-    (flatType === "1+KK"
-        ? "bg-daramis-yellow text-daramis-darkest border-daramis-yellow"
-        : "border-daramis-creamy text-daramis-creamy/80 hover:border-daramis-yellow")
-}
-```
-
-### Form States
-Implementoval jsem plný lifecycle stavů formuláře:
+### React State (3 stavy)
 
 ```tsx
+const [flatType, setFlatType] = useState<"1+KK" | "2+KK" | "3+KK" | "4+KK" | "">("");
 const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+const [emailError, setEmailError] = useState(false);
 ```
 
-| Stav | Popis | UI reakce |
-|------|-------|-----------|
-| `idle` | Výchozí stav | Formulář je interaktivní |
-| `loading` | Probíhá odesílání | Tlačítko deaktivováno, text "ODESÍLÁM..." |
-| `success` | Úspěšné odeslání | Formulář skryt, zobrazena děkovná zpráva |
-| `error` | Chyba backendu | Zobrazena chybová hláška, formulář dostupný |
+**State popis:**
+- `flatType` — vybraný typ bytu (TypeScript union type pro type safety)
+- `status` — stav formuláře (idle → loading → success/error)
+- `emailError` — boolean flag pro zobrazení chyby u email pole
 
-### Mock Backend — Simulace sítě
-
-Implementoval jsem mock backend funkci, která simuluje reálné podmínky sítě:
+### Mock Backend — Simulace sítě (10% chyba rate)
 
 ```tsx
 const submitToMockBackend = async function () {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            const random = Math.random();
-            if (random < 0.1) {
+            if (Math.random() < 0.1) {  // 10% šance na chybu
                 reject(new Error("Simulated backend error"));
             } else {
                 resolve("Success");
             }
-        }, 1500);
+        }, 1500);  // 1.5s latence
     });
-}
+};
 ```
 
 **Co simuluje:**
-- **Latence sítě**: `setTimeout 1500ms` — realistická prodleva API requestu
-- **Náhodná chyba**: 10 % požadavků selže (`random < 0.1`) — testuje, jak frontend reaguje na selhání
+- **Latence sítě**: `setTimeout 1500ms` — realistická prodleva API
+- **Náhodná chyba**: `Math.random() < 0.1` — 10% požadavků selže (testuje error handling)
 
 ### handleSubmit — Async logika odesílání
 
 ```tsx
-const handleSubmit = async function (e: React.SubmitEvent) {
+const handleSubmit = async function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus('loading');
+    setEmailError(false);
+    setStatus("loading");
+
     try {
         await submitToMockBackend();
         setStatus("success");
-    } catch (error) {
+    } catch {
         setStatus("error");
     }
 };
 ```
 
-**Tok dat:**
-1. `e.preventDefault()` — zabrání výchozímu chování prohlížeče (reload stránky)
-2. `setStatus('loading')` — okamžitě deaktivuje tlačítko
-3. `await submitToMockBackend()` — čeká 1.5s na odpověď
-4. **Success path**: `setStatus("success")` — formulář se nahradí děkovnou zprávou
-5. **Error path**: `setStatus("error")` — zobrazí chybovou hlášku, formulář zůstane dostupný
+**Tok:**
+1. `e.preventDefault()` — zabrání reload stránky
+2. `setEmailError(false)` — vymaž předchozí error
+3. `setStatus("loading")` — deaktivuj tlačítko
+4. Čekej na mock backend (1.5s)
+5. **Success**: `setStatus("success")` — formulář → děkovná zpráva
+6. **Error**: `setStatus("error")` — zobraz chybovou hlášku
 
-### UI reakce na jednotlivé stavy
+### Form State Lifecycle
 
-**Loading:**
+| Stav | Tlačítko | Zobrazení |
+|------|---------|----------|
+| `idle` | normální styl | Formulář aktivní |
+| `loading` | deaktivováno, šedé | "Odesílám..." |
+| `success` | skrytý | Děkovná zpráva |
+| `error` | normální styl | Chyba + možnost retry |
+
+**Loading UI:**
+- Tlačítko: `disabled`, `bg-primary-creamy-2`, `cursor-not-allowed`
+- Text: "ODESLAT" → "Odesílám..."
+
+**Error UI:**
+- Hláška vedle tlačítka: `text-error` ("Něco se pokazilo. Zkuste to prosím znovu.")
+- Formulář zůstane dostupný pro opakování
+
+**Success UI:**
 ```tsx
-disabled={status === 'loading'}
-className={status === 'loading'
-    ? 'bg-daramis-creamy-2 text-daramis-darkest cursor-not-allowed'
-    : 'bg-daramis-darkest text-daramis-white hover:bg-daramis-dark'
+if (status === "success") {
+    return (
+        <div className="gap-4">
+            <h2 className="font-nudista text-primary-creamy uppercase" style={{ fontSize: "32px" }}>
+                Děkujeme za odeslání formuláře!
+            </h2>
+            <p className="font-arial text-primary-creamy/80">Brzy se vám ozveme.</p>
+        </div>
+    );
 }
 ```
-- Tlačítko: deaktivováno (`disabled`), šedý background (`creamy-2`), `cursor-not-allowed`
-- Text: "ODESLAT" → "ODESÍLÁM..."
 
-**Success:**
-- Celý formulář je nahrazen komponentou s poděkováním
-- Text v `font-nudista` pro konzistenci s designem
+## 3. Rizika a Edge Cases
 
-**Error:**
-- Chybová hláška nad tlačítkem: `text-daramis-error` (`#D34B4B`)
-- Formulář zůstane dostupný — uživatel může zkusit znovu
+### Vícenásobné kliknutí na "Odeslat"
+Tlačítko je ihned deaktivováno (`disabled={status === 'loading'}`). Uživatel **nemůže odeslat formulář vícekrát** — DOM zcela blokuje sekundární submit.
 
-## 3. Rizika a edge cases
+### Výpadek API / Chyba backendu (10% testovací rate)
+- `try/catch` obaluje `submitToMockBackend()`
+- Při chybě: `setStatus("error")`
+- Chybová hláška se zobrazí vedle tlačítka
+- Formulář zůstane dostupný — uživatel **nepřijde o data**
+- Uživatel může zkusit znovu
 
-### Kliknutí na "Odeslat" vícekrát za sebou
-Tlačítko je při odesílání ihned deaktivováno (`disabled={status === 'loading'}`). Uživatel nemůže odeslat formulář vícekrát — druhý klik je ignorován na úrovni DOM.
+### Network timeout / Slow connection
+- 1.5s `setTimeout` simuluje reálnou latenci
+- Loading stav zajišťuje vizuální feedback
+- Uživatel vidí "Odesílám..." během čekání
 
-### Výpadek API / chyba backendu
-`handleSubmit` obaluje volání v `try/catch`. Při jakékoliv chybě:
-- Stav se nastaví na `"error"`
-- Zobrazí se chybová hláška
-- Formulář zůstane dostupný pro opakované odeslání
-- Uživatel **nepřijde o vyplněná data**
+### Email validace (budoucí rozšíření)
+- `emailError` state je připraven pro validaci
+- Input má Error CSS class: `errorInputClass` (`border-error`)
+- Chybová zpráva se zobrazí vedle labelu
 
 ## Jak spustit projekt lokálně
 1. `npm install`

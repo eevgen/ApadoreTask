@@ -5,28 +5,38 @@ export default function Footer() {
         <footer className="w-full bg-primary-darkest text-primary-creamy">
 
             {/* Up Section */}
-            <section className="w-full px-4 md:px-10 pt-[112px] pb-[60px] lg:pt-[160px] lg:pb-[80px]">
+            <section className="w-full px-5 md:px-10 pt-[112px] pb-[60px] lg:pt-[160px] lg:pb-[80px]">
 
 
                 <div className="max-w-[1280px] mx-auto">
 
                     {/* Mobile header */}
-                    {/* Yet to be modified... */}
                     <div className="lg:hidden mb-8">
+
+
                         <h1
-                            className="font-nudista"
+                            className="font-nudista text-primary-accent"
                             style={{
                                 fontSize: "var(--text-h1-mobile)",
                                 lineHeight: "var(--leading-h1-mobile)",
                                 letterSpacing: "var(--tracking-h1-mobile)"
                             }}
                         >
-                            <span className="text-primary-accent">Nepropásněte</span>
-                            <br />
-                            <span className="text-primary-white">život na Letné</span>
+                            Nepropásněte
                         </h1>
+                        <h1
+                            className="font-nudista text-primary-white mt-4 text-right"
+                            style={{
+                                fontSize: "var(--text-h1-mobile)",
+                                lineHeight: "var(--leading-h1-mobile)",
+                                letterSpacing: "var(--tracking-h1-mobile)"
+                            }}
+                        >
+                            život na Letné
+                        </h1>
+
                         <p
-                            className="font-arial text-primary-creamy/70 mt-6"
+                            className="font-arial text-primary-creamy/70 mt-20"
                             style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}
                         >
                             Máte otázky nebo si chcete domluvit osobní setkání?

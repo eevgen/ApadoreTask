@@ -134,17 +134,40 @@ Footer je rozdělen do **2 hlavních sekcí**:
 
 Všechna data jsou responzivní s breakpointy: `md:` a `lg:`
 
-### `components/LeadForm.tsx` — Lead Form Komponenta
+### `components/FormTextField.tsx` — Reusable Field Wrapper
 
-Client-side komponenta (`"use client"`) pro sběr dat potenciálních klientů s plnou implementací state management, validace a error handling.
+Nová komponenta pro standardizaci polí formuláře:
+```tsx
+<FormTextField label="Křestní jméno *" error={fieldErrors.firstName?.[0]}>
+  <input ... />
+</FormTextField>
+```
+
+**Funkce:**
+- Wrapper pro label + input/textarea
+- Inline error display (vedle labelu v červené barvě)
+- Typ-safe: `label: string`, `error?: string`, `children: React.ReactNode`
+- Unifikované styling pro všechna pole
+
+### `components/LeadForm.tsx` — Lead Form Komponenta (Updated)
+
+Client-side komponenta (`"use client"`) s plnou integrací Server Actions a validací.
+
+**Změny v LeadForm.tsx:**
+- ✅ Integrace `<FormTextField>` komponenty pro všechna pole
+- ✅ `submitLead` Server Action místo mock backendu
+- ✅ Zobrazení `fieldErrors` vedle jednotlivých polí
+- ✅ Zobrazení `formErrors` v boxu nahoře (globální chyby)
+- ✅ Automatické čištění chyb při úpravě pole (`handleInputChange`)
 
 **Struktura formuláře (7 řádků):**
 
 1. **Řádek 1 — Jméno + Příjmení** (responsivní: md:2 sloupce)
-   - Input typy: `text`
-   - Styling: `border border-primary-creamy/40 rounded-[4px]` (jemný border s 4px rádius)
+   - Wrapper: `<FormTextField label="Křestní jméno *" error={fieldErrors.firstName?.[0]}>`
+   - Input: `text`, placeholder, state binding
+   - Styling: `border border-primary-creamy rounded-[4px]` (jemný border s 4px rádius)
    - Focus efekt: `focus:border-primary-accent` (žlutá)
-   - Placeholder: `placeholder:text-primary-creamy/30`
+   - Error styl: `border-error` (červená barva)
 
 2. **Řádek 2 — Telefonní číslo** (full width)
    - Input type: `tel` pro nativní validaci
@@ -200,20 +223,81 @@ Když je `status === "success"`, formulář je nahrazen:
 - Nadpis: "Děkujeme za odeslání formuláře!" (32px, nudista, UPPERCASE)
 - Text: "Brzy se vám ozveme." (18px, creamy, opacity 80%)
 
-## 2. State Management a Validace
+## 2. Backend Validace a Server Actions
+
+### `app/schemas/contact-form.ts` — Zod Validační Schéma
+
+Definuje veškerou validační logiku s českými chybovými zprávami:
+
+```tsx
+const contactFormSchema = z.object({
+    firstName: z.string().trim().min(2).max(50),
+    lastName: z.string().trim().min(2).max(50),
+    phone: z.string().e164("Zadejte platné telefonní číslo"),
+    email: z.string().trim().email("Zadejte platnou e-mailovou adresu"),
+    message: z.string().trim().max(1000).optional(),
+    apartmentType: z.array(z.enum(["1+KK", "2+KK", "3+KK", "4+KK"])).optional(),
+    newsletter: z.boolean().optional().default(false),
+    agreeToPolicy: z.literal(true, {
+        message: "Musíte souhlasit se zpracováním osobních údajů"
+    }),
+});
+```
+
+**Validace:**
+- **firstName/lastName**: 2-50 znaků, trimované
+- **phone**: e164 formát (mezinárodní)
+- **email**: RFC 5322 email formát
+- **message**: max 1000 znaků (optional)
+- **agreeToPolicy**: povinná souhlas (literal true)
+
+### `app/actions/submitLead.ts` — Server Action
+
+Serverová funkce (`"use server"`) pro bezpečné zpracování formuláře:
+
+```tsx
+export async function submitLead(formData: FormData) {
+    const result = contactFormSchema.safeParse({
+        firstName: formData.get("firstName"),
+        // ... další pole ...
+    });
+
+    if (!result.success) {
+        const { fieldErrors, formErrors } = result.error.flatten();
+        return { success: false, fieldErrors, formErrors };
+    }
+
+    // data processing...
+    return { success: true };
+}
+```
+
+**Tok:**
+1. Klient pošle FormData
+2. Server validuje pomocí Zod schématu
+3. Vrací `{ success: true }` nebo `{ success: false, fieldErrors, formErrors }`
+4. Chyby se automaticky zobrazí vedle polí
+
+**Výhody:**
+- ✅ Validace na serveru (bezpečnější)
+- ✅ Nativní Next.js integraci (bez API route)
+- ✅ Typ-safe: TypeScript inférence z schématu
+- ✅ Čeština: Všechny error zprávy v češtině
 
 ### React State (3 stavy)
 
 ```tsx
-const [flatType, setFlatType] = useState<"1+KK" | "2+KK" | "3+KK" | "4+KK" | "">("");
+const [formData, setFormData] = useState({ firstName: "", ... });
+const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+const [formErrors, setFormErrors] = useState<string[]>([]);
 const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-const [emailError, setEmailError] = useState(false);
 ```
 
 **State popis:**
-- `flatType` — vybraný typ bytu (TypeScript union type pro type safety)
-- `status` — stav formuláře (idle → loading → success/error)
-- `emailError` — boolean flag pro zobrazení chyby u email pole
+- `formData` — všechna pole (firstName, lastName, phone, email, message, apartmentType, newsletter, agreeToPolicy)
+- `fieldErrors` — `{ fieldName: [errorMessage] }` (ze Zod validace)
+- `formErrors` — globální chyby (např. "Server error")
+- `status` — lifecycle stav
 
 ### Mock Backend — Simulace sítě (10% chyba rate)
 
@@ -235,30 +319,43 @@ const submitToMockBackend = async function () {
 - **Latence sítě**: `setTimeout 1500ms` — realistická prodleva API
 - **Náhodná chyba**: `Math.random() < 0.1` — 10% požadavků selže (testuje error handling)
 
-### handleSubmit — Async logika odesílání
+### handleSubmit — Integrovaný Workflow s Server Action
 
 ```tsx
-const handleSubmit = async function (e: React.FormEvent<HTMLFormElement>) {
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setEmailError(false);
+    setFieldErrors({});
+    setFormErrors([]);
     setStatus("loading");
 
     try {
-        await submitToMockBackend();
-        setStatus("success");
-    } catch {
+        const form = new FormData();
+        form.append("firstName", formData.firstName);
+        // ... všechna pole ...
+
+        const result = await submitLead(form);  // Server Action
+
+        if (!result.success) {
+            setFieldErrors(result.fieldErrors || {});
+            setFormErrors(result.formErrors || []);
+            setStatus("error");
+        } else {
+            await submitToMockBackend();  // 1.5s latence + 10% error
+            setStatus("success");
+        }
+    } catch (error) {
+        setFormErrors(["Něco se pokazilo. Zkuste to prosím znovu."]);
         setStatus("error");
     }
 };
 ```
 
-**Tok:**
-1. `e.preventDefault()` — zabrání reload stránky
-2. `setEmailError(false)` — vymaž předchozí error
-3. `setStatus("loading")` — deaktivuj tlačítko
-4. Čekej na mock backend (1.5s)
-5. **Success**: `setStatus("success")` — formulář → děkovná zpráva
-6. **Error**: `setStatus("error")` — zobraz chybovou hlášku
+**Tok odesílání:**
+1. Sbírá data z `formData` state do `FormData` objektu
+2. Volá Server Action `submitLead(form)` — validace na serveru
+3. **Server error**: zobrazí `fieldErrors` (vedle polí) + `formErrors` (v boxu nahoře)
+4. **Server success**: simuluje latenci (1.5s) + 10% chyba rate
+5. **Výsledek**: `success` (DV zpráva) nebo `error` (retry možnost)
 
 ### Form State Lifecycle
 
@@ -308,10 +405,21 @@ Tlačítko je ihned deaktivováno (`disabled={status === 'loading'}`). Uživatel
 - Loading stav zajišťuje vizuální feedback
 - Uživatel vidí "Odesílám..." během čekání
 
-### Email validace (budoucí rozšíření)
-- `emailError` state je připraven pro validaci
-- Input má Error CSS class: `errorInputClass` (`border-error`)
-- Chybová zpráva se zobrazí vedle labelu
+### Validace všech polí
+
+**Všechna pole** mají Zod validaci na serveru:
+- `fieldErrors` state zobrazuje chyby vedle jednotlivých polí (pomocí `<FormTextField>`)
+- Chyby v česčtině: "Jméno musí mít alespoň 2 znaky", "Zadejte platné telefonní číslo", atd.
+- `formErrors` (globální) pro chyby, které se týkají celého formuláře
+- Při opakovaném pokusu se chyby vymaží (`setFieldErrors({})`)
+
+**Příklad chybového stavu:**
+```
+❌ Křestní jméno: "Jméno musí mít alespoň 2 znaky"
+❌ Telefonní číslo: "Zadejte platné telefonní číslo"
+```
+
+Validace probíhá na serveru — frontend pouze zobrazuje výsledky.
 
 ## Jak spustit projekt lokálně
 1. `npm install`

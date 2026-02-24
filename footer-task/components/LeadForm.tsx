@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { submitLead } from "@/app/actions/submitLead";
 import FormTextField from "@/components/FormTextField";
+import FormCheckbox from "@/components/FormCheckbox";
 
 const inputClass =
     "bg-transparent border border-primary-creamy rounded-[4px] px-3 py-2 font-arial text-primary-white outline-none " +
@@ -138,15 +139,22 @@ export default function LeadForm() {
     if (status === "success") {
         return (
             <div className="flex flex-col justify-center items-start h-full gap-4">
-                <h2 className="font-nudista text-primary-creamy uppercase" style={{ fontSize: "32px" }}>
+                <button
+                    disabled
+                    className="font-nudista uppercase tracking-widest bg-success-submit text-primary-creamy cursor-default items-center justify-center"
+                    style={{
+                        fontSize: "var(--text-small)",
+                        height: "52px",
+                        borderRadius: "54px",
+                        padding: "10px 30px",
+                    }}
+                >
                     Děkujeme za odeslání formuláře!
-                </h2>
-                <p className="font-arial text-primary-creamy/80" style={{ fontSize: "var(--text-paragraph)", lineHeight: "var(--leading-paragraph)" }}>
-                    Brzy se vám ozveme.
-                </p>
+                </button>
             </div>
         );
     }
+
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full">
@@ -271,35 +279,30 @@ export default function LeadForm() {
 
             {/* Row 6: Checkboxes */}
             <div className="flex flex-col gap-3">
-                <label className="flex items-start gap-3 cursor-pointer group">
-                    <input
-                        type="checkbox"
-                        name="newsletter"
-                        checked={formData.newsletter}
-                        onChange={(e) => handleCheckboxChange(e, "newsletter")}
-                        className="mt-0.5 w-4 h-4 accent-primary-accent cursor-pointer shrink-0"
-                    />
-                    <span className="font-arial text-primary-white group-hover:text-primary-creamy transition-colors" style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}>
-                        Chci být součástí newsletteru Daramis a získávat všechny novinky a informace.
-                    </span>
-                </label>
+                <FormCheckbox
+                    name="newsletter"
+                    checked={formData.newsletter}
+                    onChange={(e) => handleCheckboxChange(e, "newsletter")}
+                    error={fieldErrors.agreeToPolicy?.[0]}
+                    isRequired={false}
+                >
+                    Chci být součástí newsletteru Daramis.
+                </FormCheckbox>
 
-                <label className="flex items-start gap-3 cursor-pointer group">
-                    <input
-                        type="checkbox"
-                        name="agreeToPolicy"
-                        checked={formData.agreeToPolicy}
-                        onChange={(e) => handleCheckboxChange(e, "agreeToPolicy")}
-                        className="mt-0.5 w-4 h-4 accent-primary-accent cursor-pointer shrink-0"
-                    />
-                    <span className="font-arial text-primary-white group-hover:text-primary-creamy transition-colors" style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}>
-                        Odesláním formuláře souhlasíte se zpracováním{" "}
-                        <a href="#" className="underline hover:text-primary-accent transition-colors">
-                            zásad ochrany osobních údajů
-                        </a>
-                        .
-                    </span>
-                </label>
+
+                <FormCheckbox
+                    name="agreeToPolicy"
+                    checked={formData.agreeToPolicy}
+                    onChange={(e) => handleCheckboxChange(e, "agreeToPolicy")}
+                    error={fieldErrors.agreeToPolicy?.[0]}
+                    isRequired={true}
+                >
+                    Odesláním formuláře souhlasíte se zpracováním{" "}
+                    <a href="#" className="underline hover:text-primary-accent transition-colors">
+                        zásad ochrany osobních údajů
+                    </a>
+                    .
+                </FormCheckbox>
 
                 {/* error for GDPR checkbox */}
                 {fieldErrors.agreeToPolicy && (
@@ -309,27 +312,37 @@ export default function LeadForm() {
                 )}
             </div>
 
-            {/* Row 7: Submit button + inline error */}
-            <div className="flex items-center gap-6 mt-2">
+            {/* Row 7: Submit button */}
+            <div className="flex items-center gap-4 mt-2">
                 <button
                     type="submit"
                     disabled={status === "loading"}
-                    className={`font-nudista uppercase tracking-widest py-3 px-8 rounded-full transition-all ${
+                    className={`font-nudista uppercase tracking-widest transition-all ${
                         status === "loading"
-                            ? "bg-primary-creamy-2 text-primary-darkest cursor-not-allowed"
+                            ? "bg-primary-accent/60 text-primary-darkest cursor-not-allowed"
                             : "bg-primary-accent text-primary-darkest hover:brightness-110 active:scale-95"
                     }`}
-                    style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}
+                    style={{
+                        height: "52px",
+                        borderRadius: "54px",
+                        padding: "10px 30px",
+                        fontSize: "var(--text-small)",
+                    }}
                 >
                     {status === "loading" ? "Odesílám..." : "Odeslat"}
                 </button>
 
                 {status === "error" && (
-                    <span className="font-arial text-error" style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}>
-                        Něco se pokazilo. Zkuste to prosím znovu.
+                    <span
+                        className="font-arial text-error uppercase"
+                        style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}
+                    >
+                        Něco se pokazilo,<br />zkuste to prosím znovu.
                     </span>
                 )}
             </div>
+
+
 
         </form>
     );

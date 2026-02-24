@@ -1,11 +1,13 @@
 import LeadForm from "@/components/LeadForm";
 import Image from "next/image";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Footer() {
     return (
         <footer className="w-full bg-primary-darkest text-primary-creamy">
 
             {/* Up Section */}
+            <ScrollReveal>
             <section className="w-full px-5 md:px-10 lg:px-0 pt-[112px] pb-[60px] lg:pt-[160px] lg:pb-[80px]">
 
 
@@ -83,8 +85,10 @@ export default function Footer() {
 
 
             </section>
+            </ScrollReveal>
 
             {/* Middle Section */}
+            <ScrollReveal>
             <section
                 className="w-full px-5 md:px-10 lg:px-0 relative overflow-hidden"
                 style={{
@@ -121,14 +125,14 @@ export default function Footer() {
                                 </p>
                                 <a
                                     href="mailto:sales@daramis.com"
-                                    className="font-arial text-primary-creamy hover:text-primary-accent transition-colors mt-6"
+                                    className="font-arial text-primary-creamy hover:text-primary-accent hover:scale-105 transition-all duration-300 mt-6 inline-w-fit"
                                     style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}
                                 >
                                     sales@daramis.com
                                 </a>
                                 <a
                                     href="tel:+420800226223"
-                                    className="font-arial text-primary-creamy hover:text-primary-accent transition-colors mt-4"
+                                    className="font-arial text-primary-creamy hover:text-primary-accent hover:scale-105 transition-all duration-300 mt-4 inline-w-fit"
                                     style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}
                                 >
                                     +420 800 226 223
@@ -163,14 +167,14 @@ export default function Footer() {
                             </p>
                             <a
                                 href="mailto:sales@daramis.com"
-                                className="font-arial text-primary-creamy hover:text-primary-accent transition-colors"
+                                className="font-arial text-primary-creamy hover:text-primary-accent transition-all duration-300"
                                 style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}
                             >
                                 sales@daramis.com
                             </a>
                             <a
                                 href="tel:+420800226223"
-                                className="font-arial text-primary-creamy hover:text-primary-accent transition-colors"
+                                className="font-arial text-primary-creamy hover:text-primary-accent transition-all duration-300"
                                 style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}
                             >
                                 +420 800 226 223
@@ -182,11 +186,10 @@ export default function Footer() {
 
 
             </section>
-
-
-
+            </ScrollReveal>
 
             {/* Pre-Bottom Section: Letna esens  + (LOKALITA + KONTAKT) */}
+            <ScrollReveal>
             <section
                 className="w-full px-5 md:px-10 lg:px-0 relative overflow-hidden"
                 style={{
@@ -203,7 +206,7 @@ export default function Footer() {
                     <div className="hidden lg:grid lg:grid-cols-2 gap-16 items-start">
 
                         {/* Left Column: Letna esens */}
-                        <div className="flex flex-col items-start">
+                        <div className="flex flex-col items-start hover:scale-105 transition-all duration-300">
                             <Image src="/letna_esens.png" alt="DARAMIS" width={543.116943359375} height={169.27734375} />
                         </div>
 
@@ -243,7 +246,7 @@ export default function Footer() {
                                     </span>
                                     <a
                                         href="mailto:info@esens.cz"
-                                        className="font-arial text-primary-white hover:text-primary-accent transition-colors"
+                                        className="font-arial text-primary-white hover:text-primary-accent hover:scale-105 transition-all duration-300 inline-w-fit"
                                         style={{ fontSize: "var(--text-paragraph)" }}
                                     >
                                         info@esens.cz
@@ -260,7 +263,7 @@ export default function Footer() {
                                     </span>
                                     <a
                                         href="tel:+420789893029"
-                                        className="font-arial text-primary-white hover:text-primary-accent transition-colors"
+                                        className="font-arial text-primary-white hover:text-primary-accent hover:scale-105 transition-all duration-300 inline-w-fit"
                                         style={{ fontSize: "var(--text-paragraph)" }}
                                     >
                                         +420 789 893 029
@@ -296,7 +299,7 @@ export default function Footer() {
                     <div className="lg:hidden flex flex-col items-center text-center justify-center gap-20">
 
                         {/* Letná + ESENS */}
-                        <div className="flex flex-col items-start">
+                        <div className="flex flex-col items-start hover:scale-105 transition-all duration-300">
                             <Image src="/letna_esens.png" alt="DARAMIS" width={250} height={40} />
                         </div>
 
@@ -328,7 +331,7 @@ export default function Footer() {
                             </span>
                                 <a
                                     href="mailto:info@esens.cz"
-                                    className="font-arial text-primary-creamy hover:text-primary-accent transition-colors"
+                                    className="font-arial text-primary-creamy hover:text-primary-accent hover:scale-105 transition-all duration-300 inline-w-fit"
                                     style={{ fontSize: "var(--text-paragraph)" }}
                                 >
                                     info@esens.cz
@@ -345,7 +348,7 @@ export default function Footer() {
                             </span>
                                 <a
                                     href="tel:+420789893029"
-                                    className="font-arial text-primary-creamy hover:text-primary-accent transition-colors"
+                                    className="font-arial text-primary-creamy hover:text-primary-accent hover:scale-105 transition-all duration-300 inline-w-fit"
                                     style={{ fontSize: "var(--text-paragraph)" }}
                                 >
                                     +420 789 893 029
@@ -373,8 +376,10 @@ export default function Footer() {
                     </div>
                 </div>
             </section>
+            </ScrollReveal>
 
             {/* Bottom Section */}
+            <ScrollReveal>
             <section
                 className="w-full px-5 md:px-10 lg:px-0 relative overflow-hidden"
                 style={{
@@ -429,14 +434,14 @@ export default function Footer() {
                                 <div className="flex items-center gap-6">
                                     <a
                                         href="#"
-                                        className="font-arial text-primary-creamy-2 uppercase tracking-wider hover:text-primary-creamy/60 transition-colors"
+                                        className="font-arial text-primary-creamy-2 uppercase tracking-wider hover:text-primary-creamy/60 hover:scale-105 transition-all duration-300 inline-block"
                                         style={{ fontSize: "var(--text-label)" }}
                                     >
                                         GDPR
                                     </a>
                                     <a
                                         href="#"
-                                        className="font-arial text-primary-creamy-2 uppercase tracking-wider hover:text-primary-creamy/60 transition-colors"
+                                        className="font-arial text-primary-creamy-2 uppercase tracking-wider hover:text-primary-creamy/60 hover:scale-105 transition-all duration-300 inline-block"
                                         style={{ fontSize: "11px" }}
                                     >
                                         Made by Apadore
@@ -465,14 +470,14 @@ export default function Footer() {
                         <div className="flex flex-col items-center gap-6">
                             <a
                                 href="#"
-                                className="font-arial text-primary-creamy-2 uppercase tracking-wider hover:text-primary-creamy/60 transition-colors"
+                                className="font-arial text-primary-creamy-2 uppercase tracking-wider hover:text-primary-creamy/60 hover:scale-105 transition-all duration-300 inline-block"
                                 style={{ fontSize: "var(--text-label)" }}
                             >
                                 GDPR
                             </a>
                             <a
                                 href="#"
-                                className="font-arial text-primary-creamy-2 uppercase tracking-wider hover:text-primary-creamy/60 transition-colors"
+                                className="font-arial text-primary-creamy-2 uppercase tracking-wider hover:text-primary-creamy/60 hover:scale-105 transition-all duration-300 inline-block"
                                 style={{ fontSize: "var(--text-label)" }}
                             >
                                 Made by Apadore
@@ -506,9 +511,7 @@ export default function Footer() {
                     </div>
                 </div>
             </section>
-
-
-
+            </ScrollReveal>
 
         </footer>
     );

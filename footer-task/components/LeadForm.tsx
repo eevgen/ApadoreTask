@@ -7,12 +7,12 @@ import FormCheckbox from "@/components/FormCheckbox";
 
 const inputClass =
     "bg-transparent border border-primary-creamy rounded-[4px] px-3 py-2 font-arial text-primary-white outline-none " +
-    "hover:border-primary-accent/70 focus:border-primary-accent transition-colors " +
+    "hover:border-primary-accent/70 focus:border-primary-accent transition-all duration-300 " +
     "placeholder:text-primary-white/50 w-full";
 
 const errorInputClass =
     "bg-transparent border border-error rounded-[4px] px-3 py-2 font-arial text-primary-creamy outline-none " +
-    "focus:border-error transition-colors placeholder:text-primary-creamy/30 w-full";
+    "focus:border-error transition-all duration-300 placeholder:text-primary-white/50 w-full";
 
 type FieldErrors = {
     [key: string]: string[] | undefined;
@@ -251,10 +251,10 @@ export default function LeadForm() {
                         <label
                             key={option}
                             className={
-                                "cursor-pointer rounded-[4px] px-4 py-1.5 font-arial transition-colors " +
+                                "cursor-pointer rounded-[4px] px-4 py-1.5 font-arial transition-all duration-300 " +
                                 (formData.apartmentType === option
-                                    ? "bg-primary-white text-primary-darkest"
-                                    : "text-primary-white hover:bg-primary-white/10")
+                                    ? "bg-primary-white text-primary-darkest scale-105"
+                                    : "text-primary-white hover:bg-primary-white/10 hover:scale-105")
                             }
                             style={{
                                 fontSize: "var(--text-small)",
@@ -298,7 +298,7 @@ export default function LeadForm() {
                     isRequired={true}
                 >
                     Odesláním formuláře souhlasíte se zpracováním{" "}
-                    <a href="#" className="underline hover:text-primary-accent transition-colors">
+                    <a href="#" className="underline hover:text-primary-accent transition-all duration-300">
                         zásad ochrany osobních údajů
                     </a>
                     .
@@ -317,10 +317,10 @@ export default function LeadForm() {
                 <button
                     type="submit"
                     disabled={status === "loading"}
-                    className={`font-nudista uppercase tracking-widest transition-all ${
+                    className={`font-nudista uppercase tracking-widest transition-all duration-300 ${
                         status === "loading"
                             ? "bg-primary-accent/60 text-primary-darkest cursor-not-allowed"
-                            : "bg-primary-accent text-primary-darkest hover:brightness-110 active:scale-95"
+                            : "bg-primary-accent text-primary-darkest hover:brightness-110 hover:scale-105 active:scale-95"
                     }`}
                     style={{
                         height: "52px",

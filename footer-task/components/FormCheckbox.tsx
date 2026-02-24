@@ -23,12 +23,12 @@ export default function FormCheckbox({
                 className="hidden"
             />
             <div
-                className={`shrink-0 transition-colors border ${
+                className={`shrink-0 transition-all duration-300 border ${
                     checked
-                        ? "bg-primary-accent border-primary-accent"
+                        ? "bg-primary-accent border-primary-accent scale-110"
                         : error && isRequired
-                            ? "bg-transparent border-error"
-                            : "bg-transparent border-primary-creamy"
+                            ? "bg-transparent border-error group-hover:scale-110"
+                            : "bg-transparent border-primary-creamy group-hover:scale-110"
                 }`}
                 style={{
                     width: "12px",
@@ -38,7 +38,7 @@ export default function FormCheckbox({
                 }}
             />
             <span
-                className="font-arial text-primary-white group-hover:text-primary-creamy transition-colors"
+                className="font-arial text-primary-white group-hover:text-primary-creamy transition-all duration-300"
                 style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}
             >
                 {children}

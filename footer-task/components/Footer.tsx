@@ -6,10 +6,10 @@ export default function Footer() {
         <footer className="w-full bg-primary-darkest text-primary-creamy">
 
             {/* Up Section */}
-            <section className="w-full px-5 md:px-10 pt-[112px] pb-[60px] lg:pt-[160px] lg:pb-[80px]">
+            <section className="w-full px-5 md:px-10 lg:px-0 pt-[112px] pb-[60px] lg:pt-[160px] lg:pb-[80px]">
 
 
-                <div className="max-w-[1280px] mx-auto">
+                <div className="max-w-[1365px] mx-auto">
 
 
                     {/* Mobile header */}
@@ -19,9 +19,7 @@ export default function Footer() {
                         <h1
                             className="font-nudista text-primary-accent"
                             style={{
-                                fontSize: "var(--text-h1-mobile)",
-                                lineHeight: "var(--leading-h1-mobile)",
-                                letterSpacing: "var(--tracking-h1-mobile)"
+                                fontSize: "var(--text-h1-mobile)"
                             }}
                         >
                             Nepropásněte
@@ -30,8 +28,7 @@ export default function Footer() {
                             className="font-nudista text-primary-white mt-4 text-right"
                             style={{
                                 fontSize: "var(--text-h1-mobile)",
-                                lineHeight: "var(--leading-h1-mobile)",
-                                letterSpacing: "var(--tracking-h1-mobile)"
+                                lineHeight: "var(--leading-h1-mobile)"
                             }}
                         >
                             život na Letné
@@ -43,13 +40,10 @@ export default function Footer() {
 
                         {/* Raw 1: only 'Nepropásněte'  */}
                         <h1
-                            className="font-nudista text-primary-accen
-                            /
-                            t"
+                            className="font-nudista text-primary-accent"
                             style={{
                                 fontSize: "var(--text-h1-desktop)",
-                                lineHeight: "var(--leading-h1-desktop)",
-                                letterSpacing: "var(--tracking-h1-desktop)"
+                                lineHeight: "var(--leading-h1-desktop)"
                             }}
                         >
                             Nepropásněte
@@ -74,8 +68,7 @@ export default function Footer() {
                                 className="font-nudista text-primary-white"
                                 style={{
                                     fontSize: "var(--text-h1-desktop)",
-                                    lineHeight: "var(--leading-h1-desktop)",
-                                    letterSpacing: "var(--tracking-h1-desktop)"
+                                    lineHeight: "var(--leading-h1-desktop)"
                                 }}
                             >
                                 život
@@ -93,12 +86,18 @@ export default function Footer() {
 
             {/* Middle Section */}
             <section
-                className="w-full px-5 md:px-10 pt-[112px] lg:pb-[80px]"
-                    style={{paddingTop: "var(--spacing-same"}}
+                className="w-full px-5 md:px-10 lg:px-0 relative overflow-hidden"
+                style={{
+                    paddingTop: "var(--spacing-same)",
+                    backgroundImage: `url('/background/flower_bg.svg')`,
+                    backgroundPosition: 'right 100%',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'auto'
+                }}
             >
 
 
-                <div className="max-w-[1280px] mx-auto">
+                <div className="max-w-[1365px] mx-auto">
 
                     {/* Desktop: form + contacts*/}
                     <div className="hidden lg:grid lg:grid-cols-2 gap-16 items-end mt-16">
@@ -144,7 +143,7 @@ export default function Footer() {
 
                         {/* Subtitle */}
                         <p
-                            className="font-arial text-primary-creamy/70 pt-20"
+                            className="font-arial text-primary-creamy"
                             style={{ fontSize: "var(--text-small)", lineHeight: "var(--leading-small)" }}
                         >
                             Máte otázky nebo si chcete domluvit osobní setkání?
@@ -189,17 +188,23 @@ export default function Footer() {
 
             {/* Pre-Bottom Section: Letna esens  + (LOKALITA + KONTAKT) */}
             <section
-                className="w-full px-5 md:px-10"
-                style={{paddingTop: "var(--spacing-same"}}
+                className="w-full px-5 md:px-10 lg:px-0 relative overflow-hidden"
+                style={{
+                    paddingTop: "var(--spacing-same)",
+                    backgroundImage: `url('/background/first_leave_bg.svg')`,
+                    backgroundPosition: '45% 140%',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'auto'
+                }}
             >
-                <div className="max-w-[1280px] mx-auto">
+                <div className="max-w-[1365px] mx-auto">
 
                     {/* Desktop */}
                     <div className="hidden lg:grid lg:grid-cols-2 gap-16 items-start">
 
                         {/* Left Column: Letna esens */}
                         <div className="flex flex-col items-start">
-                            <Image src="/letna_esens.svg" alt="DARAMIS" width={500} height={150} />
+                            <Image src="/letna_esens.png" alt="DARAMIS" width={543.116943359375} height={169.27734375} />
                         </div>
 
                         {/* Right Column: (LOKALITA + KONTAKT) + Contact info */}
@@ -292,7 +297,7 @@ export default function Footer() {
 
                         {/* Letná + ESENS */}
                         <div className="flex flex-col items-start">
-                            <Image src="/letna_esens.svg" alt="DARAMIS" width={200} height={40} />
+                            <Image src="/letna_esens.png" alt="DARAMIS" width={250} height={40} />
                         </div>
 
 
@@ -371,10 +376,16 @@ export default function Footer() {
 
             {/* Bottom Section */}
             <section
-                className="w-full px-5 md:px-10"
-                style={{paddingTop: "var(--spacing-same"}}
+                className="w-full px-5 md:px-10 lg:px-0 relative overflow-hidden"
+                style={{
+                    paddingTop: "var(--spacing-same)",
+                    backgroundImage: `url('/background/second_leave_bg.svg')`,
+                    backgroundPosition: '35% 30%',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'auto'
+                }}
             >
-                <div className="max-w-[1280px] mx-auto">
+                <div className="max-w-[1365px] mx-auto">
 
                     {/* Desktop */}
                     <div className="hidden lg:grid items-start">

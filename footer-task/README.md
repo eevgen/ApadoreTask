@@ -20,7 +20,6 @@ Projekt používá **Tailwind CSS v4** s direktivou `@theme` přímo v `globals.
     /* Typografie */
     --text-h1-desktop: 160px;
     --leading-h1-desktop: 160px;
-    --tracking-h1-desktop: -4px;
     /* ... responsive variant ... */
 }
 ```
@@ -111,7 +110,6 @@ Footer je rozdělen do **2 hlavních sekcí**:
 - Nadpis: "Nepropásněte" (accent žlutá) + "život na Letné" (bílá)
   - Velikost: `var(--text-h1-mobile)` (52px)
   - Řádkování: `var(--leading-h1-mobile)` (46px)
-  - Kerning: `var(--tracking-h1-mobile)` (-1.04px)
 - Popis: "Máte otázky..." (16px, opacity 70%)
 - LeadForm komponenta pod textem
 - Kontaktní údaje oddělené bordrem

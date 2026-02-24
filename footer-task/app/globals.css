@@ -25,12 +25,10 @@
     /* Typography - Desktop */
     --text-h1-desktop: 160px;
     --leading-h1-desktop: 160px;
-    --tracking-h1-desktop: -4px;
 
     /* Typography - Mobile */
     --text-h1-mobile: 52px;
     --leading-h1-mobile: 46px;
-    --tracking-h1-mobile: -1.04px;
 
     /* Paragraph text (18px) */
     --text-paragraph: 18px;
@@ -45,7 +43,11 @@
     --leading-label: 15.6px;
 
     /* Spacing same color */
-    --spacing-same: 144px
+    --spacing-same: 144px;
+
+    /* Spacing different color */
+    --spacing-diff-desktop: 160px;
+    --spacing-diff-mobile: 112px;
 
 
 }

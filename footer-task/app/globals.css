@@ -42,4 +42,9 @@
     /* Label text (12px) */
     --text-label: 12px;
     --leading-label: 15.6px;
+
+    /* Spacing same color */
+    --spacing-same: 144px
+
+
 }
